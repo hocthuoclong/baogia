@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Thư viện để xuất PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -56,7 +58,7 @@
         <div id="main-content" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Công cụ Tính chi phí Vật tư & Nhân công</h1>
-                <p class="text-slate-500 mt-2">Tra cứu vật tư, thêm tùy chỉnh, lưu trữ và xuất báo giá ra file CSV.</p>
+                <p class="text-slate-500 mt-2">Tra cứu vật tư, thêm tùy chỉnh, lưu trữ và xuất báo giá ra file CSV/PDF.</p>
             </div>
 
             <!-- Tên dự án -->
@@ -128,7 +130,7 @@
             </form>
 
             <!-- Vùng hiển thị danh sách và kết quả -->
-            <div id="result" class="mt-8">
+            <div id="result-container" class="mt-8">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-semibold text-slate-800">Bảng dự toán chi phí</h2>
                     <div class="text-right">
@@ -149,7 +151,7 @@
                                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">ĐG Vật tư</th>
                                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">ĐG Nhân công</th>
                                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Thành tiền</th>
-                                <th class="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider">Hành động</th>
+                                <th class="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase tracking-wider action-column">Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="itemListBody" class="divide-y divide-slate-200">
@@ -162,15 +164,7 @@
                     </table>
                 </div>
                 
-                <div class="mt-6 flex justify-between items-start bg-slate-100 p-4 rounded-lg">
-                    <div>
-                        <button id="exportCsvBtn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
-                           <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                           </svg>
-                           Xuất ra file CSV
-                        </button>
-                    </div>
+                <div class="mt-6 flex justify-end items-start bg-slate-100 p-4 rounded-lg">
                     <div class="text-right space-y-2">
                         <div class="flex justify-between items-center">
                             <p class="text-sm font-medium text-slate-600 mr-4">Tổng chi phí vật tư:</p>
@@ -188,6 +182,20 @@
                     </div>
                 </div>
                  <p class="text-center mt-4 text-sm font-semibold text-slate-600">Lưu ý: Tất cả đơn giá trên chưa bao gồm thuế giá trị gia tăng (VAT).</p>
+            </div>
+            
+            <!-- Nút xuất file -->
+            <div class="mt-6 flex items-center space-x-4">
+                 <button id="exportPdfBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
+                   <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5Zm0 2h10v12H5V4ZM9.5 7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V7.5a.5.5 0 0 1 .5-.5Zm-2 3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5Zm4-3a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5Z" clip-rule="evenodd" /></svg>
+                   Xuất ra file PDF
+                </button>
+                <button id="exportCsvBtn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
+                   <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                   </svg>
+                   Xuất ra file CSV
+                </button>
             </div>
         </div>
         <footer class="text-center mt-6 text-sm text-slate-500 space-y-2">
@@ -234,6 +242,7 @@
             const emptyRow = document.getElementById('emptyRow');
             const customEntryCheckbox = document.getElementById('customEntry');
             const exportCsvBtn = document.getElementById('exportCsvBtn');
+            const exportPdfBtn = document.getElementById('exportPdfBtn');
             const editIndexInput = document.getElementById('editIndex');
             const submitBtn = document.getElementById('submitBtn');
             const submitBtnText = document.getElementById('submitBtnText');
@@ -325,9 +334,11 @@
                 const projectName = projectNameInput.value.trim();
                 displayProjectName.textContent = projectName || 'Chưa có tên';
 
-                exportCsvBtn.disabled = addedItems.length === 0;
+                const hasItems = addedItems.length > 0;
+                exportCsvBtn.disabled = !hasItems;
+                exportPdfBtn.disabled = !hasItems;
 
-                if (addedItems.length === 0) {
+                if (!hasItems) {
                     itemListBody.appendChild(emptyRow);
                 } else {
                     addedItems.forEach((item, index) => {
@@ -355,7 +366,7 @@
                             <td class="px-4 py-3 text-sm text-slate-700">${item.materialPrice.toLocaleString('vi-VN')}</td>
                             <td class="px-4 py-3 text-sm text-slate-700">${item.laborPrice.toLocaleString('vi-VN')}</td>
                             <td class="px-4 py-3 text-sm font-semibold text-slate-900">${totalSubtotal.toLocaleString('vi-VN')}</td>
-                            <td class="px-4 py-3 text-center">
+                            <td class="px-4 py-3 text-center action-column">
                                 <div class="flex justify-center items-center space-x-2">
                                     <button class="edit-btn text-blue-500 hover:text-blue-700" data-index="${index}"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" /><path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" /></svg></button>
                                     <button class="delete-btn text-red-500 hover:text-red-700" data-index="${index}"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.067-2.09 1.02-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg></button>
@@ -516,6 +527,29 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            });
+
+            exportPdfBtn.addEventListener('click', function() {
+                const element = document.getElementById('result-container');
+                const projectName = projectNameInput.value.trim() || 'bao_gia';
+                const filename = `Bao gia - ${projectName}.pdf`;
+
+                // Tạm thời ẩn cột hành động
+                const actionColumns = element.querySelectorAll('.action-column');
+                actionColumns.forEach(col => col.style.display = 'none');
+
+                const opt = {
+                    margin:       0.5,
+                    filename:     filename,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+                };
+
+                html2pdf().from(element).set(opt).save().then(() => {
+                    // Hiện lại cột hành động sau khi xuất xong
+                     actionColumns.forEach(col => col.style.display = '');
+                });
             });
             
             // --- QUẢN LÝ DỮ LIỆU TÙY CHỈNH (MODAL) ---
