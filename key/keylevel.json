@@ -3,27 +3,26 @@
     "name": "Cấp 1",
     "limit": 100,
     "keys": [
-      "DV-LEVEL1-BASIC",
-      "USERA-L1-KEY",
-      "USERB-L1-KEY"
+      { "code": "DV-LEVEL1-BASIC", "startDate": "2025-01-01", "endDate": "2025-12-31" },
+      { "code": "USERA-L1-KEY", "startDate": "2025-08-01", "endDate": "2025-08-31" },
+      { "code": "USERB-L1-EXPIRED", "startDate": "2025-07-01", "endDate": "2025-07-31" }
     ]
   },
   "level2": {
     "name": "Cấp 2",
     "limit": 1000,
     "keys": [
-      "DV-LEVEL2-PRO",
-      "USERC-L2-KEY",
-      "USERD-L2-KEY"
+      { "code": "DV-LEVEL2-PRO", "startDate": "2025-01-01", "endDate": "2026-12-31" },
+      { "code": "USERC-L2-KEY", "startDate": "2025-06-01", "endDate": "2025-11-30" }
     ]
   },
   "level3": {
     "name": "Cấp 3",
     "limit": 5000,
     "keys": [
-      "DV-LEVEL3-UNLIMITED",
-      "ADMIN-KEY-01",
-      "PARTNER-KEY-VIP"
+      { "code": "DV-LEVEL3-UNLIMITED", "startDate": "2025-01-01", "endDate": "9999-12-31" },
+      { "code": "ADMIN-KEY-01", "startDate": "2025-01-01", "endDate": "9999-12-31" },
+      { "code": "PARTNER-KEY-VIP", "startDate": "2025-01-01", "endDate": "9999-12-31" }
     ]
   }
 }
