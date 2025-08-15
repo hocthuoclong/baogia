@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Thư viện để xuất PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Thư viện để kéo/thả -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
@@ -52,18 +52,30 @@
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
             align-items: center;
             justify-content: center;
         }
         .modal-content {
             background-color: #fefefe;
             margin: auto;
-            padding: 20px;
+            padding: 2rem;
             border: 1px solid #888;
             width: 90%;
-            max-width: 600px;
+            max-width: 500px;
             border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            animation: modal-pop 0.3s ease-out;
+        }
+        @keyframes modal-pop {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         .sortable-ghost {
             opacity: 0.4;
@@ -286,6 +298,18 @@
         </div>
     </div>
 
+    <!-- Modal Xác nhận (IMPROVEMENT) -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content text-center">
+            <h2 class="text-xl font-bold mb-4">Xác nhận</h2>
+            <p id="confirmationMessage" class="text-slate-600 mb-6">Bạn có chắc chắn muốn thực hiện hành động này?</p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirmBtn" class="bg-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-700">Xác nhận</button>
+                <button id="cancelBtn" class="bg-gray-200 text-slate-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300">Hủy bỏ</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -332,6 +356,12 @@
             const userLevelDisplay = document.getElementById('user-level-display');
             const categoryNameInput = document.getElementById('categoryName');
             const addCategoryBtn = document.getElementById('addCategoryBtn');
+            
+            // Modal xác nhận
+            const confirmationModal = document.getElementById('confirmationModal');
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
 
             let addedItems = [];
             let itemPriceData = {};
@@ -345,6 +375,25 @@
             const LOCAL_STORAGE_KEY_PROJECT = 'currentProjectName';
 
             // --- CÁC HÀM XỬ LÝ ---
+
+            // (IMPROVEMENT) Hàm hiển thị modal xác nhận
+            function showConfirmation(message, onConfirm) {
+                confirmationMessage.textContent = message;
+                confirmationModal.style.display = 'flex';
+
+                // Dùng .cloneNode(true) để xóa các event listener cũ
+                const newConfirmBtn = confirmBtn.cloneNode(true);
+                confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+                
+                newConfirmBtn.addEventListener('click', () => {
+                    onConfirm();
+                    confirmationModal.style.display = 'none';
+                });
+            }
+
+            cancelBtn.addEventListener('click', () => {
+                confirmationModal.style.display = 'none';
+            });
 
             function getCustomData() {
                 return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_CUSTOM) || '{}');
@@ -387,10 +436,10 @@
                     <button id="logoutBtn" class="text-red-500 hover:underline ml-2">(Đăng xuất)</button>
                 `;
                 document.getElementById('logoutBtn').addEventListener('click', () => {
-                    if(confirm('Bạn có chắc muốn đăng xuất và nhập mã khóa mới?')) {
+                    showConfirmation('Bạn có chắc muốn đăng xuất và nhập mã khóa mới?', () => {
                         localStorage.removeItem(LOCAL_STORAGE_KEY_LICENSE);
                         location.reload();
-                    }
+                    });
                 });
             }
 
@@ -408,6 +457,11 @@
             }
 
             async function handleAuthentication() {
+                 // --- SECURITY WARNING ---
+                 // The entire key validation logic is client-side. This is NOT secure.
+                 // Anyone can view the source code, read the keylevel.json file, and find a valid key.
+                 // For a real-world application, license key validation MUST be done on a server.
+                 // The current implementation is for demonstration purposes only.
                  try {
                     const response = await fetch('key/keylevel.json');
                     if (!response.ok) throw new Error('Không tìm thấy file key.');
@@ -728,8 +782,10 @@
                 const index = parseInt(targetButton.dataset.index, 10);
 
                 if (targetButton.classList.contains('delete-btn')) {
-                    addedItems.splice(index, 1);
-                    renderList();
+                    showConfirmation('Bạn có chắc muốn xóa mục này?', () => {
+                        addedItems.splice(index, 1);
+                        renderList();
+                    });
                 } else if (targetButton.classList.contains('edit-btn')) {
                     const item = addedItems[index];
                     
@@ -753,10 +809,12 @@
             });
             
             clearListBtn.addEventListener('click', function() {
-                if (addedItems.length > 0 && confirm('Bạn có chắc muốn xóa toàn bộ danh sách vật tư hiện tại?')) {
-                    addedItems = [];
-                    projectNameInput.value = '';
-                    renderList();
+                if (addedItems.length > 0) {
+                    showConfirmation('Bạn có chắc muốn xóa toàn bộ danh sách vật tư hiện tại?', () => {
+                        addedItems = [];
+                        projectNameInput.value = '';
+                        renderList();
+                    });
                 }
             });
 
@@ -865,15 +923,16 @@
             });
 
             window.addEventListener('click', (event) => {
-                if (event.target == dataModal) {
+                if (event.target == dataModal || event.target == confirmationModal) {
                     dataModal.style.display = 'none';
+                    confirmationModal.style.display = 'none';
                 }
             });
 
             customDataList.addEventListener('click', (event) => {
                 if (event.target.classList.contains('delete-custom-item-btn')) {
                     const keyToDelete = event.target.dataset.key;
-                    if (confirm(`Bạn có chắc muốn xóa vật tư "${keyToDelete}" khỏi bộ nhớ?`)) {
+                    showConfirmation(`Bạn có chắc muốn xóa vật tư "${keyToDelete}" khỏi bộ nhớ?`, () => {
                         const customData = getCustomData();
                         delete customData[keyToDelete];
                         saveCustomData(customData);
@@ -883,7 +942,7 @@
                         populateDatalist();
                         
                         renderCustomDataList(); // Cập nhật lại danh sách trong modal
-                    }
+                    });
                 }
             });
 
