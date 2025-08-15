@@ -59,6 +59,12 @@
                 <p class="text-slate-500 mt-2">Tra cứu vật tư, thêm tùy chỉnh, lưu trữ và xuất báo giá ra file CSV.</p>
             </div>
 
+            <!-- Tên dự án -->
+            <div class="mb-6">
+                <label for="projectName" class="block text-sm font-medium text-slate-700 mb-2">Tên Dự án / Báo giá</label>
+                <input type="text" id="projectName" class="w-full px-4 py-3 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Ví dụ: Báo giá nhà anh A - Hạng mục điện">
+            </div>
+
             <!-- Trạng thái tải dữ liệu -->
             <div id="data-status" class="text-center mb-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 transition-opacity duration-500">
                 Đang tải cơ sở dữ liệu vật tư...
@@ -123,7 +129,13 @@
 
             <!-- Vùng hiển thị danh sách và kết quả -->
             <div id="result" class="mt-8">
-                <h2 class="text-xl font-semibold text-slate-800 mb-4">Bảng dự toán chi phí</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-3xl font-semibold text-slate-800">Bảng dự toán chi phí</h2>
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-slate-500">Dự án:</p>
+                        <p id="displayProjectName" class="text-lg font-semibold text-slate-800">Chưa có tên</p>
+                    </div>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-slate-200 rounded-lg">
                         <thead class="bg-slate-100">
@@ -204,6 +216,8 @@
             const dataStatus = document.getElementById('data-status');
             const formFieldset = document.querySelector('#itemForm fieldset');
             const itemForm = document.getElementById('itemForm');
+            const projectNameInput = document.getElementById('projectName');
+            const displayProjectName = document.getElementById('displayProjectName');
             const itemFullNameInput = document.getElementById('itemFullName');
             const itemNameInput = document.getElementById('itemName');
             const itemSpecInput = document.getElementById('itemSpec');
@@ -308,6 +322,9 @@
                 let grandTotalMaterial = 0;
                 let grandTotalLabor = 0;
 
+                const projectName = projectNameInput.value.trim();
+                displayProjectName.textContent = projectName || 'Chưa có tên';
+
                 exportCsvBtn.disabled = addedItems.length === 0;
 
                 if (addedItems.length === 0) {
@@ -354,6 +371,8 @@
             }
 
             // --- EVENT LISTENERS ---
+            projectNameInput.addEventListener('input', renderList);
+            
             cancelEditBtn.addEventListener('click', () => setEditMode(false));
 
             customEntryCheckbox.addEventListener('change', function() {
@@ -465,7 +484,13 @@
             exportCsvBtn.addEventListener('click', function() {
                 if (addedItems.length === 0) return;
 
+                const projectName = projectNameInput.value.trim();
                 let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                
+                if (projectName) {
+                    csvContent += `Dự án:,"${projectName.replace(/"/g, '""')}"\r\n\r\n`;
+                }
+
                 csvContent += "STT,Tên vật tư,Quy cách,Nhãn hiệu,Đơn vị,Số lượng,ĐG Vật tư,TT Vật tư,ĐG Nhân công,TT Nhân công,Tổng cộng\r\n";
 
                 let totalMaterial = 0, totalLabor = 0;
