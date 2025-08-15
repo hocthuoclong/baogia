@@ -521,7 +521,7 @@
                     console.error('Lỗi khi tải file dữ liệu:', error);
                     dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
                     dataStatus.classList.add('bg-red-100', 'text-red-800');
-                    dataStatus.textContent = 'Lỗi: Không thể tải được cơ sở dữ liệu. Vui lòng kiểm tra lại file.';
+                    dataStatus.innerHTML = `<strong>Lỗi: Không thể tải được cơ sở dữ liệu.</strong><br>${error.message}.<br>Nếu bạn đang mở file này trực tiếp, hãy thử chạy nó qua một máy chủ web cục bộ.`;
                 }
             }
 
