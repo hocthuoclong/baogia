@@ -201,17 +201,23 @@
             </div>
             
             <!-- Nút xuất file -->
-            <div class="mt-6 flex items-center space-x-4">
-                 <button id="exportPdfBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
-                   <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5Zm0 2h10v12H5V4ZM9.5 7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V7.5a.5.5 0 0 1 .5-.5Zm-2 3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5Zm4-3a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5Z" clip-rule="evenodd" /></svg>
-                   Xuất ra file PDF
+            <div class="mt-6 flex items-center justify-between">
+                <button id="clearListBtn" class="bg-red-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
+                   <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-1.157.234-2.13.84-2.825 1.697A3.5 3.5 0 0 0 2.5 9.5v.053c0 .856.34 1.633.89 2.211a3.5 3.5 0 0 0 5.22 0 3.5 3.5 0 0 0 .89-2.211V9.5a3.5 3.5 0 0 0-.675-2.009A3.499 3.499 0 0 0 6 4.193V3.75A1.25 1.25 0 0 1 7.25 2.5h5.5A1.25 1.25 0 0 1 14 3.75v.443a3.5 3.5 0 0 0-2.175 2.009A3.5 3.5 0 0 0 11.15 9.5v.053c0 .856.34 1.633.89 2.211a3.5 3.5 0 0 0 5.22 0 3.5 3.5 0 0 0 .89-2.211V9.5a3.5 3.5 0 0 0-.675-2.009A3.499 3.499 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM7.5 15a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" clip-rule="evenodd" /></svg>
+                   Xóa hết danh sách
                 </button>
-                <button id="exportCsvBtn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
-                   <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                   </svg>
-                   Xuất ra file CSV
-                </button>
+                <div class="flex items-center space-x-4">
+                     <button id="exportPdfBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
+                       <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5Zm0 2h10v12H5V4ZM9.5 7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V7.5a.5.5 0 0 1 .5-.5Zm-2 3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5Zm4-3a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5Z" clip-rule="evenodd" /></svg>
+                       Xuất ra file PDF
+                    </button>
+                    <button id="exportCsvBtn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
+                       <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                       </svg>
+                       Xuất ra file CSV
+                    </button>
+                </div>
             </div>
         </div>
         <footer class="text-center mt-6 text-sm text-slate-500 space-y-2">
@@ -277,6 +283,7 @@
             const customEntryCheckbox = document.getElementById('customEntry');
             const exportCsvBtn = document.getElementById('exportCsvBtn');
             const exportPdfBtn = document.getElementById('exportPdfBtn');
+            const clearListBtn = document.getElementById('clearListBtn');
             const editIndexInput = document.getElementById('editIndex');
             const submitBtn = document.getElementById('submitBtn');
             const submitBtnText = document.getElementById('submitBtnText');
@@ -300,16 +307,33 @@
             const allInputs = [itemNameInput, itemSpecInput, itemBrandInput, itemUnitInput, itemMaterialPriceInput, itemLaborPriceInput];
             const LOCAL_STORAGE_KEY_CUSTOM = 'customUnitPriceData';
             const LOCAL_STORAGE_KEY_LICENSE = 'userLicenseKey';
+            const LOCAL_STORAGE_KEY_QUOTE = 'currentQuoteItems';
+            const LOCAL_STORAGE_KEY_PROJECT = 'currentProjectName';
 
             // --- CÁC HÀM XỬ LÝ ---
 
             function getCustomData() {
-                const data = localStorage.getItem(LOCAL_STORAGE_KEY_CUSTOM);
-                return data ? JSON.parse(data) : {};
+                return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_CUSTOM) || '{}');
             }
 
             function saveCustomData(data) {
                 localStorage.setItem(LOCAL_STORAGE_KEY_CUSTOM, JSON.stringify(data));
+            }
+
+            function saveCurrentQuote() {
+                localStorage.setItem(LOCAL_STORAGE_KEY_QUOTE, JSON.stringify(addedItems));
+                localStorage.setItem(LOCAL_STORAGE_KEY_PROJECT, projectNameInput.value);
+            }
+
+            function loadCurrentQuote() {
+                const savedItems = localStorage.getItem(LOCAL_STORAGE_KEY_QUOTE);
+                const savedProject = localStorage.getItem(LOCAL_STORAGE_KEY_PROJECT);
+                if (savedItems) {
+                    addedItems = JSON.parse(savedItems);
+                }
+                if (savedProject) {
+                    projectNameInput.value = savedProject;
+                }
             }
             
             function populateDatalist() {
@@ -323,7 +347,16 @@
             
             function updateUserLevelDisplay() {
                 const limitText = itemLimit === Infinity ? 'Không giới hạn' : itemLimit;
-                userLevelDisplay.textContent = `Cấp độ: ${userLevel} (${addedItems.length}/${limitText} vật tư)`;
+                userLevelDisplay.innerHTML = `
+                    <span>Cấp độ: ${userLevel} (${addedItems.length}/${limitText} vật tư)</span>
+                    <button id="logoutBtn" class="text-red-500 hover:underline ml-2">(Đăng xuất)</button>
+                `;
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    if(confirm('Bạn có chắc muốn đăng xuất và nhập mã khóa mới?')) {
+                        localStorage.removeItem(LOCAL_STORAGE_KEY_LICENSE);
+                        location.reload();
+                    }
+                });
             }
 
             function setUserLevel(levelDetails) {
@@ -331,7 +364,7 @@
                     userLevel = 'Free';
                     itemLimit = 10;
                 } else {
-                    userLevel = `Cấp ${levelDetails.level}`;
+                    userLevel = levelDetails.name;
                     itemLimit = levelDetails.limit === 5000 ? Infinity : levelDetails.limit;
                 }
                 updateUserLevelDisplay();
@@ -346,8 +379,18 @@
                     keyData = await response.json();
 
                     const savedKey = localStorage.getItem(LOCAL_STORAGE_KEY_LICENSE);
-                    if (savedKey && keyData[savedKey]) {
-                        setUserLevel(keyData[savedKey]);
+                    let foundLevel = null;
+                    if(savedKey) {
+                        for (const level of Object.values(keyData)) {
+                            if (level.keys.includes(savedKey)) {
+                                foundLevel = level;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (foundLevel) {
+                        setUserLevel(foundLevel);
                     } else {
                         keyModal.style.display = 'flex';
                     }
@@ -359,10 +402,18 @@
             
             submitKeyBtn.addEventListener('click', () => {
                 const enteredKey = keyInput.value.trim();
-                if (keyData[enteredKey]) {
+                let foundLevel = null;
+                for (const level of Object.values(keyData)) {
+                    if (level.keys.includes(enteredKey)) {
+                        foundLevel = level;
+                        break;
+                    }
+                }
+
+                if (foundLevel) {
                     localStorage.setItem(LOCAL_STORAGE_KEY_LICENSE, enteredKey);
                     keyError.classList.add('hidden');
-                    setUserLevel(keyData[enteredKey]);
+                    setUserLevel(foundLevel);
                 } else {
                     keyError.classList.remove('hidden');
                 }
@@ -429,6 +480,7 @@
                 const hasItems = addedItems.length > 0;
                 exportCsvBtn.disabled = !hasItems;
                 exportPdfBtn.disabled = !hasItems;
+                clearListBtn.disabled = !hasItems;
 
                 if (!hasItems) {
                     itemListBody.appendChild(emptyRow);
@@ -480,6 +532,7 @@
                 vatAmountEl.textContent = `${vatAmount.toLocaleString('vi-VN')} VNĐ`;
                 totalCostEl.textContent = `${grandTotal.toLocaleString('vi-VN')} VNĐ`;
                 updateUserLevelDisplay();
+                saveCurrentQuote();
             }
 
             // --- EVENT LISTENERS ---
@@ -596,6 +649,14 @@
                     customEntryCheckbox.dispatchEvent(new Event('change'));
 
                     document.getElementById('main-content').scrollIntoView();
+                }
+            });
+            
+            clearListBtn.addEventListener('click', function() {
+                if (addedItems.length > 0 && confirm('Bạn có chắc muốn xóa toàn bộ danh sách vật tư hiện tại?')) {
+                    addedItems = [];
+                    projectNameInput.value = '';
+                    renderList();
                 }
             });
 
@@ -723,6 +784,7 @@
 
             // --- KHỞI TẠO ---
             handleAuthentication();
+            loadCurrentQuote();
             renderList();
         });
     </script>
