@@ -1,14 +1,29 @@
 {
-  "DV-LEVEL1-BASIC": {
-    "level": 1,
-    "limit": 100
+  "level1": {
+    "name": "Cấp 1",
+    "limit": 100,
+    "keys": [
+      "DV-LEVEL1-BASIC",
+      "USERA-L1-KEY",
+      "USERB-L1-KEY"
+    ]
   },
-  "DV-LEVEL2-PRO": {
-    "level": 2,
-    "limit": 1000
+  "level2": {
+    "name": "Cấp 2",
+    "limit": 1000,
+    "keys": [
+      "DV-LEVEL2-PRO",
+      "USERC-L2-KEY",
+      "USERD-L2-KEY"
+    ]
   },
-  "DV-LEVEL3-UNLIMITED": {
-    "level": 3,
-    "limit": 5000
+  "level3": {
+    "name": "Cấp 3",
+    "limit": 5000,
+    "keys": [
+      "DV-LEVEL3-UNLIMITED",
+      "ADMIN-KEY-01",
+      "PARTNER-KEY-VIP"
+    ]
   }
 }
