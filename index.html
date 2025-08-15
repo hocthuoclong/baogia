@@ -485,9 +485,23 @@
 
             async function initializeApp() {
                 try {
-                    const response = await fetch('unitprice.json');
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const baseData = await response.json();
+                    // Tải nhiều file unitprice
+                    let baseData = {};
+                    let i = 0;
+                    while (true) {
+                        const fileName = i === 0 ? 'unitprice.json' : `unitprice-${i}.json`;
+                        const response = await fetch(fileName);
+                        if (!response.ok) {
+                            if (response.status === 404) {
+                                break; // Dừng lại khi không tìm thấy file tiếp theo
+                            }
+                            throw new Error(`HTTP error! status: ${response.status} for file ${fileName}`);
+                        }
+                        const dataPart = await response.json();
+                        baseData = { ...baseData, ...dataPart };
+                        i++;
+                    }
+
                     const customData = getCustomData();
                     itemPriceData = { ...baseData, ...customData };
                     
@@ -500,10 +514,10 @@
                     setTimeout(() => { dataStatus.style.opacity = 0; }, 2000);
 
                 } catch (error) {
-                    console.error('Không thể tải file unitprice.json:', error);
+                    console.error('Lỗi khi tải file dữ liệu:', error);
                     dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
                     dataStatus.classList.add('bg-red-100', 'text-red-800');
-                    dataStatus.textContent = 'Lỗi: Không thể tải được cơ sở dữ liệu. Vui lòng đảm bảo file unitprice.json tồn tại và đặt cùng cấp với file index.html.';
+                    dataStatus.textContent = 'Lỗi: Không thể tải được cơ sở dữ liệu. Vui lòng kiểm tra lại file.';
                 }
             }
 
