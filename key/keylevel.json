@@ -1,0 +1,14 @@
+{
+  "DV-LEVEL1-BASIC": {
+    "level": 1,
+    "limit": 100
+  },
+  "DV-LEVEL2-PRO": {
+    "level": 2,
+    "limit": 1000
+  },
+  "DV-LEVEL3-UNLIMITED": {
+    "level": 3,
+    "limit": 5000
+  }
+}
