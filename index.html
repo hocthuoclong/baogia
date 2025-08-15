@@ -37,59 +37,66 @@
                 <p class="text-slate-500 mt-2">Tra cứu vật tư có sẵn hoặc thêm tùy chỉnh và xuất báo giá ra file CSV.</p>
             </div>
 
+            <!-- Trạng thái tải dữ liệu -->
+            <div id="data-status" class="text-center mb-4 p-3 rounded-lg bg-yellow-100 text-yellow-800 transition-opacity duration-500">
+                Đang tải cơ sở dữ liệu vật tư...
+            </div>
+
             <!-- Form thêm vật tư -->
-            <form id="itemForm" class="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-4">
-                 <input type="hidden" id="editIndex" value="-1">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label for="itemFullName" class="block text-sm font-medium text-slate-700 mb-2">Tìm kiếm vật tư</label>
-                        <input type="text" id="itemFullName" list="itemOptions" class="w-full px-4 py-3 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Gõ để tìm kiếm...">
-                        <datalist id="itemOptions"></datalist>
+            <form id="itemForm">
+                <fieldset id="form-fieldset" class="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-4" disabled>
+                    <input type="hidden" id="editIndex" value="-1">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="itemFullName" class="block text-sm font-medium text-slate-700 mb-2">Tìm kiếm vật tư</label>
+                            <input type="text" id="itemFullName" list="itemOptions" class="w-full px-4 py-3 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Gõ để tìm kiếm...">
+                            <datalist id="itemOptions"></datalist>
+                        </div>
+                         <div>
+                            <label for="itemName" class="block text-sm font-medium text-slate-700 mb-2">Tên vật tư <span class="text-red-500">*</span></label>
+                            <input type="text" id="itemName" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
+                        </div>
+                        <div>
+                            <label for="itemSpec" class="block text-sm font-medium text-slate-700 mb-2">Quy cách</label>
+                            <input type="text" id="itemSpec" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
+                        </div>
+                         <div>
+                            <label for="itemBrand" class="block text-sm font-medium text-slate-700 mb-2">Nhãn hiệu</label>
+                            <input type="text" id="itemBrand" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
+                        </div>
+                        <div>
+                            <label for="itemUnit" class="block text-sm font-medium text-slate-700 mb-2">Đơn vị</label>
+                            <input type="text" id="itemUnit" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" placeholder="m, cái..." readonly>
+                        </div>
+                        <div>
+                            <label for="itemQuantity" class="block text-sm font-medium text-slate-700 mb-2">Số lượng <span class="text-red-500">*</span></label>
+                            <input type="number" step="0.1" id="itemQuantity" class="w-full px-4 py-3 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="100" required>
+                        </div>
+                         <div>
+                            <label for="itemMaterialPrice" class="block text-sm font-medium text-slate-700 mb-2">ĐG Vật tư</label>
+                            <input type="number" id="itemMaterialPrice" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
+                        </div>
+                         <div>
+                            <label for="itemLaborPrice" class="block text-sm font-medium text-slate-700 mb-2">ĐG Nhân công</label>
+                            <input type="number" id="itemLaborPrice" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
+                        </div>
                     </div>
-                     <div>
-                        <label for="itemName" class="block text-sm font-medium text-slate-700 mb-2">Tên vật tư <span class="text-red-500">*</span></label>
-                        <input type="text" id="itemName" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
+                     <div class="pt-2 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input id="customEntry" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <label for="customEntry" class="ml-2 block text-sm text-gray-900">Nhập tùy chỉnh</label>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" id="cancelEditBtn" class="hidden bg-gray-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-600">Hủy</button>
+                            <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center">
+                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                <span id="submitBtnText">Thêm vào danh sách</span>
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <label for="itemSpec" class="block text-sm font-medium text-slate-700 mb-2">Quy cách</label>
-                        <input type="text" id="itemSpec" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
-                    </div>
-                     <div>
-                        <label for="itemBrand" class="block text-sm font-medium text-slate-700 mb-2">Nhãn hiệu</label>
-                        <input type="text" id="itemBrand" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
-                    </div>
-                    <div>
-                        <label for="itemUnit" class="block text-sm font-medium text-slate-700 mb-2">Đơn vị</label>
-                        <input type="text" id="itemUnit" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" placeholder="m, cái..." readonly>
-                    </div>
-                    <div>
-                        <label for="itemQuantity" class="block text-sm font-medium text-slate-700 mb-2">Số lượng <span class="text-red-500">*</span></label>
-                        <input type="number" step="0.1" id="itemQuantity" class="w-full px-4 py-3 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="100" required>
-                    </div>
-                     <div>
-                        <label for="itemMaterialPrice" class="block text-sm font-medium text-slate-700 mb-2">ĐG Vật tư</label>
-                        <input type="number" id="itemMaterialPrice" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
-                    </div>
-                     <div>
-                        <label for="itemLaborPrice" class="block text-sm font-medium text-slate-700 mb-2">ĐG Nhân công</label>
-                        <input type="number" id="itemLaborPrice" class="w-full px-4 py-3 bg-slate-200 border-slate-300 border rounded-lg transition" readonly>
-                    </div>
-                </div>
-                 <div class="pt-2 flex justify-between items-center">
-                    <div class="flex items-center">
-                        <input id="customEntry" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                        <label for="customEntry" class="ml-2 block text-sm text-gray-900">Nhập tùy chỉnh</label>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button type="button" id="cancelEditBtn" class="hidden bg-gray-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-600">Hủy</button>
-                        <button type="submit" id="submitBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center">
-                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                            <span id="submitBtnText">Thêm vào danh sách</span>
-                        </button>
-                    </div>
-                </div>
+                </fieldset>
             </form>
 
             <!-- Vùng hiển thị danh sách và kết quả -->
@@ -149,28 +156,16 @@
             </div>
         </div>
         <footer class="text-center mt-6 text-sm text-slate-500 space-y-1">
-          
+            <p>Một công cụ đơn giản được tạo bởi Gemini.</p>
             <p class="font-semibold text-slate-600">Lưu ý: Tất cả đơn giá trên chưa bao gồm thuế giá trị gia tăng (VAT).</p>
         </footer>
     </div>
 
     <script>
-        // --- CƠ SỞ DỮ LIỆU ĐƠN GIÁ ---
-        const itemPriceData = {
-            "Dây điện CVV 1.5mm² (Cadivi)": { name: "Dây điện", spec: "CVV 1.5mm²", brand: "Cadivi", materialPrice: 8500, laborPrice: 3500, unit: 'm' },
-            "Dây điện CVV 2.5mm² (Cadivi)": { name: "Dây điện", spec: "CVV 2.5mm²", brand: "Cadivi", materialPrice: 12700, laborPrice: 3500, unit: 'm' },
-            "Dây điện CVV 4.0mm² (Cadivi)": { name: "Dây điện", spec: "CVV 4.0mm²", brand: "Cadivi", materialPrice: 19500, laborPrice: 4000, unit: 'm' },
-            "Dây điện CVV 6.0mm² (Cadivi)": { name: "Dây điện", spec: "CVV 6.0mm²", brand: "Cadivi", materialPrice: 28000, laborPrice: 4000, unit: 'm' },
-            "Dây điện CVV 10mm² (Cadivi)": { name: "Dây điện", spec: "CVV 10mm²", brand: "Cadivi", materialPrice: 45000, laborPrice: 5000, unit: 'm' },
-            "Cáp TV 5C (Sino)": { name: "Cáp TV", spec: "5C", brand: "Sino", materialPrice: 7500, laborPrice: 3000, unit: 'm' },
-            "Cáp mạng Cat.6 UTP (AMP)": { name: "Cáp mạng", spec: "Cat.6 UTP", brand: "AMP", materialPrice: 9800, laborPrice: 3000, unit: 'm' },
-            "Ống luồn dây D20 (Sino)": { name: "Ống luồn dây", spec: "D20", brand: "Sino", materialPrice: 6500, laborPrice: 4500, unit: 'm' },
-            "Ống luồn dây D25 (Sino)": { name: "Ống luồn dây", spec: "D25", brand: "Sino", materialPrice: 9200, laborPrice: 4500, unit: 'm' },
-            "Kẹp xà gồ chữ C (Mạ kẽm)": { name: "Kẹp xà gồ", spec: "Chữ C", brand: "Mạ kẽm", materialPrice: 2546, laborPrice: 2000, unit: 'cái' },
-            "Gối bê tông đỡ ống D280 (420x210x150)": { name: "Gối bê tông đỡ ống", spec: "D280, 420x210x150", brand: "", materialPrice: 65000, laborPrice: 15000, unit: 'cái' },
-        };
-
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            // --- CÁC BIẾN TOÀN CỤC ---
+            const dataStatus = document.getElementById('data-status');
+            const formFieldset = document.querySelector('#itemForm fieldset');
             const itemForm = document.getElementById('itemForm');
             const itemFullNameInput = document.getElementById('itemFullName');
             const itemNameInput = document.getElementById('itemName');
@@ -194,8 +189,35 @@
             const cancelEditBtn = document.getElementById('cancelEditBtn');
 
             let addedItems = [];
+            let itemPriceData = {};
             const allInputs = [itemNameInput, itemSpecInput, itemBrandInput, itemUnitInput, itemMaterialPriceInput, itemLaborPriceInput];
 
+            // --- LẤY DỮ LIỆU TỪ FILE JSON ---
+            try {
+                const response = await fetch('unitprice.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                itemPriceData = await response.json();
+                
+                // Cập nhật giao diện khi tải thành công
+                dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
+                dataStatus.classList.add('bg-green-100', 'text-green-800');
+                dataStatus.textContent = 'Cơ sở dữ liệu đã sẵn sàng.';
+                formFieldset.disabled = false; // Mở khóa form
+                setTimeout(() => { dataStatus.style.opacity = 0; }, 2000);
+
+            } catch (error) {
+                console.error('Không thể tải file unitprice.json:', error);
+                // Cập nhật giao diện khi có lỗi
+                dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
+                dataStatus.classList.add('bg-red-100', 'text-red-800');
+                dataStatus.textContent = 'Lỗi: Không thể tải được cơ sở dữ liệu đơn giá. Vui lòng đảm bảo file unitprice.json tồn tại và đặt cùng cấp với file index.html.';
+                return; // Dừng thực thi
+            }
+
+
+            // --- CÁC HÀM XỬ LÝ ---
             Object.keys(itemPriceData).forEach(itemName => {
                 const option = document.createElement('option');
                 option.value = itemName;
@@ -208,7 +230,6 @@
                     submitBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
                     submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600');
                     cancelEditBtn.classList.remove('hidden');
-                    // **FIX**: Remove 'required' from search input during edit mode
                     itemFullNameInput.required = false;
                 } else {
                     submitBtnText.textContent = 'Thêm vào danh sách';
@@ -219,38 +240,9 @@
                     itemForm.reset();
                     customEntryCheckbox.checked = false;
                     customEntryCheckbox.dispatchEvent(new Event('change'));
-                     // **FIX**: Restore 'required' to search input after editing
-                    itemFullNameInput.required = true;
+                    itemFullNameInput.required = false;
                 }
             }
-            
-            cancelEditBtn.addEventListener('click', () => setEditMode(false));
-
-            customEntryCheckbox.addEventListener('change', function() {
-                const isCustom = this.checked;
-                allInputs.forEach(input => {
-                    input.readOnly = !isCustom;
-                    input.classList.toggle('bg-slate-200', !isCustom);
-                    input.classList.toggle('bg-white', isCustom);
-                    if(isCustom) input.placeholder = "Nhập...";
-                });
-                if (!isCustom) itemFullNameInput.dispatchEvent(new Event('input'));
-            });
-
-            itemFullNameInput.addEventListener('input', function() {
-                if (customEntryCheckbox.checked) return;
-                const selectedItem = itemPriceData[this.value];
-                if (selectedItem) {
-                    itemNameInput.value = selectedItem.name;
-                    itemSpecInput.value = selectedItem.spec;
-                    itemBrandInput.value = selectedItem.brand;
-                    itemUnitInput.value = selectedItem.unit;
-                    itemMaterialPriceInput.value = selectedItem.materialPrice;
-                    itemLaborPriceInput.value = selectedItem.laborPrice;
-                } else {
-                    allInputs.forEach(input => input.value = '');
-                }
-            });
 
             function renderList() {
                 itemListBody.innerHTML = ''; 
@@ -301,6 +293,35 @@
                 totalLaborCostEl.textContent = `${grandTotalLabor.toLocaleString('vi-VN')} VNĐ`;
                 totalCostEl.textContent = `${(grandTotalMaterial + grandTotalLabor).toLocaleString('vi-VN')} VNĐ`;
             }
+
+            // --- EVENT LISTENERS ---
+            cancelEditBtn.addEventListener('click', () => setEditMode(false));
+
+            customEntryCheckbox.addEventListener('change', function() {
+                const isCustom = this.checked;
+                allInputs.forEach(input => {
+                    input.readOnly = !isCustom;
+                    input.classList.toggle('bg-slate-200', !isCustom);
+                    input.classList.toggle('bg-white', isCustom);
+                    if(isCustom) input.placeholder = "Nhập...";
+                });
+                if (!isCustom) itemFullNameInput.dispatchEvent(new Event('input'));
+            });
+
+            itemFullNameInput.addEventListener('input', function() {
+                if (customEntryCheckbox.checked) return;
+                const selectedItem = itemPriceData[this.value];
+                if (selectedItem) {
+                    itemNameInput.value = selectedItem.name;
+                    itemSpecInput.value = selectedItem.spec;
+                    itemBrandInput.value = selectedItem.brand;
+                    itemUnitInput.value = selectedItem.unit;
+                    itemMaterialPriceInput.value = selectedItem.materialPrice;
+                    itemLaborPriceInput.value = selectedItem.laborPrice;
+                } else {
+                    allInputs.forEach(input => input.value = '');
+                }
+            });
 
             itemForm.addEventListener('submit', function(event) {
                 event.preventDefault();
@@ -403,6 +424,7 @@
                 document.body.removeChild(link);
             });
 
+            // --- KHỞI TẠO ---
             renderList();
         });
     </script>
