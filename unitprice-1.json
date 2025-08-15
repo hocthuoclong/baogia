@@ -1,12 +1,10 @@
 {
-  "": {
-    "name": "",
-    "spec": "",
-    "brand": "",
-    "materialPrice": ,
-    "laborPrice": ,
-    "unit": ""
+  "Dây điện CVV 4.0mm² (Cadivi)": {
+    "name": "Dây điện",
+    "spec": "CVV 4.0mm²",
+    "brand": "Cadivi",
+    "materialPrice": 19500,
+    "laborPrice": 4000,
+    "unit": "m"
   }
 }
-
-
