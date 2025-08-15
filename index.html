@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nội dung cần tạo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Tùy chỉnh font cho toàn bộ ứng dụng */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style cho pre-wrap để giữ nguyên định dạng xuống dòng của bài thơ */
+        .whitespace-pre-wrap {
+            white-space: pre-wrap;
+        }
+        #poem-display-canvas {
+            display: none;
+        }
+        /* Style tùy chỉnh cho các lựa chọn màu sắc trong dropdown */
+        .yellow-option { color: #facc15; }
+        .red-option { color: #f87171; }
+        .green-option { color: #4ade80; }
+        .blue-option { color: #60a5fa; }
+        .purple-option { color: #a78bfa; }
+
+        /* --- UPDATED STYLES FOR BACKGROUND IMAGE AND OVERLAY --- */
+        #poem-display {
+            position: relative;
+            overflow: hidden;
+            background-size: contain; /* Cân chỉnh hình gốc */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #000; /* Nền đen cho phần thừa */
+        }
+        #poem-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.2); /* Lớp phủ tối SIÊU MỎNG */
+            z-index: 1;
+        }
+        #poem-display > * {
+            position: relative;
+            z-index: 2;
+            /* Thay thế shadow bằng viền chữ sắc nét */
+            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+        }
+        
+        /* --- STYLES FOR 2-LINE KARAOKE EFFECT --- */
+        #poem-content-container {
+            height: 11rem; /* Approx height for 2 lines of text-5xl with line-height */
+            position: relative;
+            overflow: hidden;
+        }
+        #poem-content {
+             transition: transform 0.3s ease-out; /* Hiệu ứng cuộn mượt */
+             position: absolute;
+             left: 0;
+             right: 0;
+        }
+        #poem-title-display {
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
+
+    <!-- Password Protection Modal -->
+    <div id="password-modal" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 w-full max-w-sm text-center border-2 border-yellow-500">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">Yêu cầu xác thực</h2>
+            <p class="text-gray-400 mb-6">Vui lòng nhập mật khẩu để tiếp tục.</p>
+            <input
+                type="password"
+                id="password-input"
+                class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 mb-4"
+                placeholder="Mật khẩu"
+            />
+            <div class="flex items-center justify-center mb-4">
+                <input type="checkbox" id="remember-me-checkbox" class="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500">
+                <label for="remember-me-checkbox" class="ml-2 block text-sm text-gray-400">Ghi nhớ mật khẩu</label>
+            </div>
+            <button
+                id="password-submit-btn"
+                class="w-full py-3 px-6 bg-yellow-600 text-white rounded-xl hover:bg-yellow-700 font-semibold transition duration-300"
+            >
+                Xác nhận
+            </button>
+            <p id="password-error" class="text-red-400 mt-4 h-5"></p> <!-- Placeholder for error message -->
+        </div>
+    </div>
+
+    <!-- Main Application Container (initially hidden) -->
+    <div id="app-container" class="w-full max-w-2xl bg-gray-800 rounded-2xl shadow-xl p-8 space-y-6 hidden">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-center text-yellow-400 flex-grow">Nội dung cần tạo</h1>
+            <button id="logout-btn" class="py-2 px-4 bg-red-600 text-white rounded-xl hover:bg-red-700 transition duration-300 text-sm">Đăng xuất</button>
+        </div>
+        <p class="text-center text-gray-400">
+            Nhập tiêu đề và nội dung bạn cần tạo vào đây. Ứng dụng sẽ tự động tạo âm thanh, tô màu từng từ và quay lại màn hình.
+        </p>
+
+        <!-- Ô chọn API Key -->
+        <div>
+            <label for="api-key-select" class="block text-sm font-medium text-gray-400 mb-1">Chọn API Key của bạn:</label>
+            <select
+                id="api-key-select"
+                class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
+            >
+                <!-- Các tùy chọn sẽ được thêm bằng JavaScript -->
+            </select>
+        </div>
+
+        <div>
+            <label for="poem-title" class="block text-sm font-medium text-gray-400 mb-1">Tiêu đề:</label>
+            <input
+                type="text"
+                id="poem-title"
+                class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
+                placeholder="Ví dụ: Nỗi Nhớ..."
+            />
+        </div>
+
+        <textarea
+            id="poem-text"
+            class="w-full h-48 p-4 text-gray-200 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
+            placeholder="Dán nội dung bạn cần tạo vào đây..."
+        ></textarea>
+        
+        <!-- NEW: End Screen Text Input -->
+        <div>
+            <label for="end-screen-text" class="block text-sm font-medium text-gray-400 mb-1">Nội dung màn hình kết thúc (10 giây cuối):</label>
+            <textarea
+                id="end-screen-text"
+                class="w-full h-24 p-4 text-gray-200 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
+            >Cảm ơn đã xem video!
+Đăng ký kênh: https://www.youtube.com/@hocthuoclong2k</textarea>
+        </div>
+        
+        <!-- UPDATED: Audio Source Selection -->
+        <div class="space-y-3">
+            <label class="block text-sm font-medium text-gray-400">Nguồn âm thanh:</label>
+            <div class="flex gap-x-6">
+                <div class="flex items-center">
+                    <input id="audio-source-text" name="audio-source" type="radio" checked class="h-4 w-4 border-gray-500 bg-gray-600 text-yellow-500 focus:ring-yellow-600">
+                    <label for="audio-source-text" class="ml-3 block text-sm font-medium leading-6 text-gray-300">Âm thanh từ văn bản</label>
+                </div>
+                <div class="flex items-center">
+                    <input id="audio-source-upload" name="audio-source" type="radio" class="h-4 w-4 border-gray-500 bg-gray-600 text-yellow-500 focus:ring-yellow-600">
+                    <label for="audio-source-upload" class="ml-3 block text-sm font-medium leading-6 text-gray-300">Tải lên file âm thanh</label>
+                </div>
+            </div>
+            <div id="audio-upload-container" class="hidden space-y-3">
+                 <!-- Audio uploaders will be generated by JavaScript here -->
+            </div>
+        </div>
+
+        <!-- NEW: Multiple Background Image Inputs -->
+        <div class="space-y-4">
+            <label class="block text-sm font-medium text-gray-400">Trình chiếu hình nền (Tối đa 5 hình):</label>
+            <div id="background-image-list" class="space-y-3">
+                <!-- Image uploaders will be generated by JavaScript here -->
+            </div>
+        </div>
+
+        <!-- Thêm các tùy chọn giọng đọc và màu sắc -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div class="w-full sm:w-1/2">
+                <label for="voice-select" class="block text-sm font-medium text-gray-400 mb-1">Chọn giọng đọc:</label>
+                <select id="voice-select" class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="Kore">Em gái Lan 20 tuổi (Giọng nữ, cao)</option>
+                    <option value="Zephyr">Em gái Hồng 25 tuổi (Giọng nữ, sáng)</option>
+                    <option value="Leda">Em gái Phượng 25 tuổi (Giọng nữ, trẻ trung)</option>
+                    <option value="Callirrhoe">Em gái Cúc 25 tuổi  (Giọng nữ, nhẹ nhàng)</option>
+                    <option value="Rasalgethi">Anh trai Nam đẹp trai 30 tuổi (Giọng nam, truyền cảm)</option>
+                    <option value="Puck">Anh Trai Bằng 35 tuổi (Giọng nam, sôi nổi)</option>
+                    
+                </select>
+            </div>
+            <div class="w-full sm:w-1/2">
+                <label for="color-select" class="block text-sm font-medium text-gray-400 mb-1">Chọn màu chữ nổi bật:</label>
+                <select id="color-select" class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    <option value="none">Không tô màu</option>
+                    <option value="#facc15" class="yellow-option" selected>Vàng</option>
+                    <option value="#f87171" class="red-option">Đỏ</option>
+                    <option value="#4ade80" class="green-option">Xanh lá</option>
+                    <option value="#60a5fa" class="blue-option">Xanh lam</option>
+                    <option value="#a78bfa" class="purple-option">Tím</option>
+                </select>
+            </div>
+        </div>
+        <!-- Thêm ô nhập ghi chú về tốc độ/cảm xúc -->
+        <div>
+            <label for="speed-instruction" class="block text-sm font-medium text-gray-400 mb-1">Ghi chú về tốc độ/cảm xúc (tùy chọn):</label>
+            <input
+                type="text"
+                id="speed-instruction"
+                class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
+                placeholder="Ví dụ: giọng chậm rãi, buồn bã, sôi nổi..."
+            />
+        </div>
+        
+        <!-- Thêm tùy chọn chất lượng video -->
+        <div>
+            <label for="resolution-select" class="block text-sm font-medium text-gray-400 mb-1">Chọn chất lượng video:</label>
+            <select id="resolution-select" class="w-full p-3 text-gray-200 bg-gray-700 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <option value="1080">Full HD (1920x1080)</option>
+                <option value="720" selected>HD (1280x720)</option>
+                <option value="480">SD (854x480)</option>
+            </select>
+        </div>
+
+        <!-- NEW: Option to hide text during recording -->
+        <div class="flex items-center justify-center pt-2">
+            <input type="checkbox" id="hide-text-checkbox" class="h-4 w-4 rounded border-gray-500 bg-gray-600 text-yellow-500 focus:ring-yellow-600">
+            <label for="hide-text-checkbox" class="ml-2 block text-sm text-gray-400">Ẩn văn bản khi quay video</label>
+        </div>
+
+        <div class="flex flex-wrap gap-4 justify-center">
+            <button
+                id="generate-btn"
+                class="py-3 px-6 rounded-xl font-semibold transition duration-300 transform bg-yellow-600 hover:bg-yellow-700 text-white hover:scale-105"
+            >
+                Tạo âm thanh
+            </button>
+            <button
+                id="play-btn"
+                class="py-3 px-6 rounded-xl font-semibold transition duration-300 transform bg-green-600 hover:bg-green-700 text-white hover:scale-105 opacity-50 cursor-not-allowed"
+                disabled
+            >
+                Phát
+            </button>
+            <button
+                id="stop-btn"
+                class="py-3 px-6 rounded-xl font-semibold transition duration-300 transform bg-red-600 hover:bg-red-700 text-white hover:scale-105 opacity-50 cursor-not-allowed"
+                disabled
+            >
+                Dừng
+            </button>
+            <a
+                id="download-audio-btn"
+                class="py-3 px-6 rounded-xl font-semibold text-center transition duration-300 transform bg-gray-600 hover:bg-gray-700 text-white hover:scale-105 opacity-50 cursor-not-allowed hidden"
+                disabled
+                download="audio.wav"
+            >
+                Tải xuống âm thanh
+            </a>
+            <!-- Nút mới để quay màn hình -->
+            <button
+                id="record-btn"
+                class="py-3 px-6 rounded-xl font-semibold transition duration-300 transform bg-purple-600 hover:bg-purple-700 text-white hover:scale-105"
+            >
+                <span id="record-btn-text">Quay màn hình</span>
+                <span id="record-countdown" class="ml-2 font-mono hidden"></span>
+            </button>
+            <a
+                id="download-video-btn"
+                class="py-3 px-6 rounded-xl font-semibold text-center transition duration-300 transform bg-pink-600 hover:bg-pink-700 text-white hover:scale-105 opacity-50 cursor-not-allowed hidden"
+                disabled
+                download="video.webm"
+            >
+                Tải xuống video
+            </a>
+        </div>
+
+        <!-- Poem Display Area - UPDATED -->
+        <div id="poem-display" class="mt-8 p-6 bg-gray-900 rounded-xl shadow-lg hidden aspect-video flex flex-col justify-end">
+             <div>
+                <h3 id="poem-title-display" class="text-6xl font-bold text-center text-white mb-4"></h3>
+                <div id="poem-content-container" class="w-full">
+                     <p id="poem-content" class="text-5xl leading-relaxed text-white whitespace-pre-wrap text-center"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Canvas ẩn để ghi hình -->
+        <canvas id="poem-display-canvas"></canvas>
+    </div>
+
+    <!-- Custom Modal for alerts -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center border-2 border-yellow-500">
+            <p id="modal-message" class="text-lg font-semibold text-white mb-4"></p>
+            <button
+                id="modal-close-btn"
+                class="py-2 px-6 bg-yellow-600 text-white rounded-xl hover:bg-yellow-700 transition duration-300"
+            >
+                Đóng
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // --- PASSWORD PROTECTION LOGIC ---
+        const passwordModal = document.getElementById('password-modal');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmitBtn = document.getElementById('password-submit-btn');
+        const passwordError = document.getElementById('password-error');
+        const rememberMeCheckbox = document.getElementById('remember-me-checkbox');
+        const appContainer = document.getElementById('app-container');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        const correctPassword = "thichca@N2024";
+
+        function initAudioContext() {
+            // This function is just a placeholder to ensure the user interacts with the page
+            // before we try to use AudioContext, which helps prevent issues.
+            console.log("Page interaction detected, AudioContext should be usable.");
+        }
+
+        const checkPassword = () => {
+            if (passwordInput.value === correctPassword) {
+                if (rememberMeCheckbox.checked) {
+                    localStorage.setItem('passwordRemembered', 'true');
+                } else {
+                    localStorage.removeItem('passwordRemembered');
+                }
+                passwordModal.classList.add('hidden');
+                appContainer.classList.remove('hidden');
+                initAudioContext();
+            } else {
+                passwordError.textContent = 'Mật khẩu không đúng. Vui lòng thử lại.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        };
+
+        const logout = () => {
+            localStorage.removeItem('passwordRemembered');
+            location.reload();
+        };
+
+        passwordSubmitBtn.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        logoutBtn.addEventListener('click', logout);
+
+        // --- MAIN APPLICATION LOGIC ---
+
+        // Helper function to convert base64 to ArrayBuffer
+        const base64ToArrayBuffer = (base64) => {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        };
+
+        // Helper function to convert PCM audio data to WAV Blob
+        const pcmToWav = (pcm, sampleRate) => {
+            const numChannels = 1;
+            const bitDepth = 16;
+            const pcm16 = new Int16Array(pcm);
+            const dataLength = pcm16.length * 2;
+            const buffer = new ArrayBuffer(44 + dataLength);
+            const view = new DataView(buffer);
+            let offset = 0;
+            const writeString = (str) => {
+                for (let i = 0; i < str.length; i++) {
+                    view.setUint8(offset++, str.charCodeAt(i));
+                }
+            };
+
+            writeString('RIFF');
+            view.setUint32(offset, 36 + dataLength, true); offset += 4;
+            writeString('WAVE');
+            writeString('fmt ');
+            view.setUint32(offset, 16, true); offset += 4;
+            view.setUint16(offset, 1, true); offset += 2;
+            view.setUint16(offset, numChannels, true); offset += 2;
+            view.setUint32(offset, sampleRate, true); offset += 4;
+            view.setUint32(offset, sampleRate * numChannels * (bitDepth / 8), true); offset += 4;
+            view.setUint16(offset, numChannels * (bitDepth / 8), true); offset += 2;
+            view.setUint16(offset, bitDepth, true); offset += 2;
+            writeString('data');
+            view.setUint32(offset, dataLength, true); offset += 4;
+
+            for (let i = 0; i < pcm16.length; i++, offset += 2) {
+                view.setInt16(offset, pcm16[i], true);
+            }
+            return new Blob([view], { type: 'audio/wav' });
+        };
+        
+        let audioUrl = null;
+        let audioRef = null;
+        let timeoutIds = [];
+        let words = [];
+        let currentWordIndex = -1;
+        let textLines = []; // NEW: To store pre-processed lines
+
+        // Các biến mới cho tính năng quay màn hình
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let videoUrl = null;
+        let animationFrameId = null;
+        
+        let backgroundSlots = Array(5).fill(null).map(() => ({
+            file: null,
+            startTime: 0,
+            endTime: 0,
+            imageObject: new Image(),
+            objectUrl: null,
+            transition: 'fade' // Default transition
+        }));
+        backgroundSlots.forEach(slot => slot.imageObject.crossOrigin = "Anonymous");
+
+        let audioSlots = Array(5).fill(null).map(() => ({
+            file: null,
+            startTime: 0,
+            endTime: 0,
+            objectUrl: null,
+            buffer: null
+        }));
+
+        const colorMap = {
+            "#facc15": "text-yellow-400", // Adjusted for better contrast on dark overlay
+            "#f87171": "text-red-400",
+            "#4ade80": "text-green-400",
+            "#60a5fa": "text-blue-400",
+            "#a78bfa": "text-purple-400"
+        };
+        
+        const apiKeys = {
+            "Tài khoản 1-adida": "AIzaSyBPjVP0P3AmyGTy_NzH31XreJoKbfWu6Fw",
+            "Tài khoản 2- htkd": "AIzaSyAbtF_xJ-9L6o2mlrltdicF2O3p3QfOEa4",
+            "Tài khoản 3- mauni": "AIzaSyDL8P-ZG4SpiOTPRNj2zdIMWRHrQjFsrBk",
+            "Tài khoản 4- TanTam": "AIzaSyA1dP7G-LKdD7rkYCuj3j2JhXBgL5BpJUE",
+            "Tài khoản 5- TanTinh": "AIzaSyCduFTVK93TIcLFE4CeO2_06I4vq3kiwfA",
+            "Tài khoản 6- ThuocLong": "AIzaSyAtpsps7N7KSdBqkRNlN5PWKGG9VxXkP9E",
+        };
+
+        const apiKeySelect = document.getElementById('api-key-select');
+        const poemTitleInput = document.getElementById('poem-title');
+        const poemTextarea = document.getElementById('poem-text');
+        const endScreenTextarea = document.getElementById('end-screen-text');
+        const bgImageListContainer = document.getElementById('background-image-list');
+        const voiceSelect = document.getElementById('voice-select');
+        const colorSelect = document.getElementById('color-select');
+        const speedInstruction = document.getElementById('speed-instruction');
+        const resolutionSelect = document.getElementById('resolution-select');
+        const hideTextCheckbox = document.getElementById('hide-text-checkbox');
+        const generateBtn = document.getElementById('generate-btn');
+        const playBtn = document.getElementById('play-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const downloadAudioBtn = document.getElementById('download-audio-btn');
+        const recordBtn = document.getElementById('record-btn');
+        const recordBtnText = document.getElementById('record-btn-text');
+        const recordCountdown = document.getElementById('record-countdown');
+        const downloadVideoBtn = document.getElementById('download-video-btn');
+        const poemDisplay = document.getElementById('poem-display');
+        const poemTitleDisplay = document.getElementById('poem-title-display');
+        const poemContent = document.getElementById('poem-content');
+        const modal = document.getElementById('modal');
+        const modalMessage = document.getElementById('modal-message');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const audioSourceTextRadio = document.getElementById('audio-source-text');
+        const audioSourceUploadRadio = document.getElementById('audio-source-upload');
+        const audioUploadContainer = document.getElementById('audio-upload-container');
+
+        function updatePreview() {
+            const title = poemTitleInput.value;
+            const text = poemTextarea.value;
+            const firstImageFile = backgroundSlots.find(slot => slot.file)?.file;
+
+            if (!title && !text && !firstImageFile) {
+                poemDisplay.classList.add('hidden');
+                return;
+            }
+
+            poemDisplay.classList.remove('hidden');
+            poemTitleDisplay.textContent = title;
+            
+            const lines = text.split('\n');
+            poemContent.innerHTML = lines.map(line => `<div>${line.split(/(\s+)/).filter(Boolean).map(word => `<span>${word}</span>`).join('')}</div>`).join('');
+
+            const firstSlotWithImage = backgroundSlots.find(slot => slot.objectUrl);
+            if (firstSlotWithImage) {
+                 poemDisplay.style.backgroundImage = `url(${firstSlotWithImage.objectUrl})`;
+            } else {
+                 poemDisplay.style.backgroundImage = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('passwordRemembered') === 'true') {
+                appContainer.classList.remove('hidden');
+                initAudioContext();
+            } else {
+                passwordModal.classList.remove('hidden');
+            }
+
+            for (const accountName in apiKeys) {
+                const option = document.createElement('option');
+                option.value = apiKeys[accountName];
+                option.textContent = accountName;
+                apiKeySelect.appendChild(option);
+            }
+            
+            // Generate image uploaders
+            for (let i = 0; i < 5; i++) {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'grid grid-cols-1 sm:grid-cols-4 gap-2 items-center';
+                
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.className = 'col-span-1 w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-yellow-300 hover:file:bg-gray-500 cursor-pointer';
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (backgroundSlots[i].objectUrl) {
+                        URL.revokeObjectURL(backgroundSlots[i].objectUrl);
+                    }
+                    if (file) {
+                        backgroundSlots[i].file = file;
+                        const url = URL.createObjectURL(file);
+                        backgroundSlots[i].objectUrl = url;
+                        backgroundSlots[i].imageObject.src = url;
+                        updatePreview();
+                    } else {
+                        backgroundSlots[i] = { ...backgroundSlots[i], file: null, objectUrl: null, imageObject: new Image() };
+                    }
+                });
+
+                const timeInputDiv = document.createElement('div');
+                timeInputDiv.className = 'col-span-2 grid grid-cols-2 gap-2';
+
+                const startTimeInput = document.createElement('input');
+                startTimeInput.type = 'number';
+                startTimeInput.placeholder = 'Bắt đầu (giây)';
+                startTimeInput.className = 'w-full p-2 text-gray-200 bg-gray-700 rounded-xl border border-gray-600';
+                startTimeInput.oninput = (e) => { backgroundSlots[i].startTime = parseFloat(e.target.value) || 0; };
+
+                const endTimeInput = document.createElement('input');
+                endTimeInput.type = 'number';
+                endTimeInput.placeholder = 'Kết thúc (giây)';
+                endTimeInput.className = 'w-full p-2 text-gray-200 bg-gray-700 rounded-xl border border-gray-600';
+                endTimeInput.oninput = (e) => { backgroundSlots[i].endTime = parseFloat(e.target.value) || 0; };
+                
+                const transitionSelect = document.createElement('select');
+                transitionSelect.className = 'col-span-1 w-full p-2 text-gray-200 bg-gray-700 rounded-xl border border-gray-600';
+                const transitions = { none: 'Không', fade: 'Mờ dần', zoomin: 'Phóng to', zoomout: 'Thu nhỏ', slideleft: 'Trượt trái' };
+                for (const [value, text] of Object.entries(transitions)) {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = text;
+                    transitionSelect.appendChild(option);
+                }
+                transitionSelect.onchange = (e) => { backgroundSlots[i].transition = e.target.value; };
+
+                timeInputDiv.appendChild(startTimeInput);
+                timeInputDiv.appendChild(endTimeInput);
+                slotDiv.appendChild(fileInput);
+                slotDiv.appendChild(timeInputDiv);
+                slotDiv.appendChild(transitionSelect);
+                bgImageListContainer.appendChild(slotDiv);
+            }
+            
+            // Generate audio uploaders
+            for (let i = 0; i < 5; i++) {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'grid grid-cols-1 sm:grid-cols-3 gap-2 items-center';
+                
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'audio/*';
+                fileInput.className = 'col-span-1 w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-yellow-300 hover:file:bg-gray-500 cursor-pointer';
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (audioSlots[i].objectUrl) {
+                        URL.revokeObjectURL(audioSlots[i].objectUrl);
+                    }
+                    if (file) {
+                        audioSlots[i].file = file;
+                        audioSlots[i].objectUrl = URL.createObjectURL(file);
+                    } else {
+                        audioSlots[i] = { ...audioSlots[i], file: null, objectUrl: null, buffer: null };
+                    }
+                });
+
+                const timeInputDiv = document.createElement('div');
+                timeInputDiv.className = 'col-span-2 grid grid-cols-2 gap-2';
+
+                const startTimeInput = document.createElement('input');
+                startTimeInput.type = 'number';
+                startTimeInput.placeholder = 'Bắt đầu (giây)';
+                startTimeInput.className = 'w-full p-2 text-gray-200 bg-gray-700 rounded-xl border border-gray-600';
+                startTimeInput.oninput = (e) => { audioSlots[i].startTime = parseFloat(e.target.value) || 0; };
+
+                const endTimeInput = document.createElement('input');
+                endTimeInput.type = 'number';
+                endTimeInput.placeholder = 'Kết thúc (giây)';
+                endTimeInput.className = 'w-full p-2 text-gray-200 bg-gray-700 rounded-xl border border-gray-600';
+                endTimeInput.oninput = (e) => { audioSlots[i].endTime = parseFloat(e.target.value) || 0; };
+                
+                timeInputDiv.appendChild(startTimeInput);
+                timeInputDiv.appendChild(endTimeInput);
+                slotDiv.appendChild(fileInput);
+                slotDiv.appendChild(timeInputDiv);
+                audioUploadContainer.appendChild(slotDiv);
+            }
+            
+            poemTitleInput.addEventListener('input', updatePreview);
+            poemTextarea.addEventListener('input', updatePreview);
+
+            // Audio source logic
+            audioSourceTextRadio.addEventListener('change', () => {
+                audioUploadContainer.classList.add('hidden');
+                generateBtn.disabled = false;
+            });
+            audioSourceUploadRadio.addEventListener('change', () => {
+                audioUploadContainer.classList.remove('hidden');
+                generateBtn.disabled = true;
+                playBtn.disabled = true;
+                playBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+        });
+
+        const showModal = (message) => {
+            modalMessage.textContent = message;
+            modal.classList.remove('hidden');
+        };
+
+        generateBtn.addEventListener('click', handleGenerateAudio);
+        playBtn.addEventListener('click', handlePlay);
+        stopBtn.addEventListener('click', handleStop);
+        modalCloseBtn.addEventListener('click', () => modal.classList.add('hidden'));
+        recordBtn.addEventListener('click', toggleRecording);
+
+        async function handleGenerateAudio() {
+            if (!audioSourceTextRadio.checked) return;
+
+            const apiKey = apiKeySelect.value.trim();
+            if (!apiKey || apiKey.startsWith("MÃ_API_CỦA_TÀI_KHOẢN")) {
+                showModal("Lỗi: Vui lòng chọn một API Key hợp lệ.");
+                return;
+            }
+
+            const titleText = poemTitleInput.value;
+            const poemText = poemTextarea.value;
+            if (!poemText) {
+                showModal("Vui lòng nhập nội dung.");
+                return;
+            }
+            
+            handleStop();
+            if (audioUrl) {
+                URL.revokeObjectURL(audioUrl);
+                audioUrl = null;
+            }
+            if (videoUrl) {
+                URL.revokeObjectURL(videoUrl);
+                videoUrl = null;
+            }
+            
+            words = poemText.split(/(\s+|[,.?!;:"'])+/).filter(word => word.trim() !== '');
+            updatePreview();
+
+            generateBtn.textContent = 'Đang tạo...';
+            generateBtn.disabled = true;
+            generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            generateBtn.classList.remove('hover:bg-yellow-700', 'hover:scale-105');
+
+            const selectedVoice = voiceSelect.value;
+            const customInstruction = speedInstruction.value.trim();
+            const fullText = `${titleText ? titleText + '\n' : ''}${poemText}`;
+            let prompt = `Đọc nội dung sau với giọng truyền cảm và rõ ràng:\n${fullText}`;
+            if (customInstruction) {
+                prompt = `Đọc nội dung sau ${customInstruction} và truyền cảm, rõ ràng:\n${fullText}`;
+            }
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: selectedVoice }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorDetails = await response.text();
+                    console.error('Lỗi API:', errorDetails);
+                    throw new Error(`Tạo âm thanh thất bại: Lỗi ${response.status}. Chi tiết: ${errorDetails}`);
+                }
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const wavBlob = pcmToWav(pcmData, sampleRate);
+                    audioUrl = URL.createObjectURL(wavBlob);
+                    showModal("Tạo âm thanh thành công! Giờ bạn có thể nhấn Phát hoặc Quay màn hình.");
+                    
+                    playBtn.disabled = false;
+                    playBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    playBtn.classList.add('hover:bg-green-700', 'hover:scale-105');
+                    
+                    downloadAudioBtn.href = audioUrl;
+                    downloadAudioBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+                    downloadAudioBtn.classList.add('hover:bg-gray-700', 'hover:scale-105');
+                } else {
+                    throw new Error("Không có dữ liệu âm thanh hợp lệ trong phản hồi.");
+                }
+            } catch (error) {
+                console.error('Lỗi khi gọi API TTS:', error);
+                showModal(`Lỗi: ${error.message}`);
+            } finally {
+                generateBtn.textContent = 'Tạo âm thanh';
+                generateBtn.disabled = false;
+                generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                generateBtn.classList.add('hover:bg-yellow-700', 'hover:scale-105');
+            }
+        }
+        
+        function preprocessTextIntoLines(context, text, maxWidth) {
+            const lines = [];
+            const textWords = text.split(/(\s+)/).filter(Boolean);
+            let currentLine = '';
+            let wordStartIndex = 0;
+            let lineWordCount = 0;
+
+            textWords.forEach(word => {
+                if (word.includes('\n')) {
+                    const subWords = word.split('\n');
+                    subWords.forEach((subWord, index) => {
+                        if (context.measureText(currentLine + subWord).width > maxWidth && currentLine.length > 0) {
+                            lines.push({ text: currentLine.trim(), startWordIndex: wordStartIndex, endWordIndex: wordStartIndex + lineWordCount - 1 });
+                            currentLine = subWord + ' ';
+                            wordStartIndex += lineWordCount;
+                            lineWordCount = 1;
+                        } else {
+                            currentLine += subWord;
+                        }
+
+                        if (index < subWords.length - 1) { // It's a newline
+                            lines.push({ text: currentLine.trim(), startWordIndex: wordStartIndex, endWordIndex: wordStartIndex + lineWordCount - 1 });
+                            currentLine = '';
+                            wordStartIndex += lineWordCount;
+                            lineWordCount = 0;
+                        }
+                    });
+                     if (/\S/.test(word)) lineWordCount++;
+                } else {
+                    if (context.measureText(currentLine + word).width > maxWidth && currentLine.length > 0) {
+                        lines.push({ text: currentLine.trim(), startWordIndex: wordStartIndex, endWordIndex: wordStartIndex + lineWordCount - 1 });
+                        currentLine = word;
+                        wordStartIndex += lineWordCount;
+                        lineWordCount = 1;
+                    } else {
+                        currentLine += word;
+                        if (/\S/.test(word)) lineWordCount++;
+                    }
+                }
+            });
+            if (currentLine.trim().length > 0) {
+                lines.push({ text: currentLine.trim(), startWordIndex: wordStartIndex, endWordIndex: wordStartIndex + lineWordCount - 1 });
+            }
+            return lines;
+        }
+
+        async function startCombinedWorkflow() {
+            // Logic for handling audio source
+            let finalAudioUrl = null;
+            let totalDuration = 0;
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            if (audioSourceUploadRadio.checked) {
+                const uploadedAudios = audioSlots.filter(s => s.file && s.endTime > s.startTime);
+                if (uploadedAudios.length === 0) {
+                    showModal("Vui lòng tải lên ít nhất một file âm thanh và đặt thời gian hợp lệ.");
+                    return;
+                }
+                // Decode all audio files
+                await Promise.all(uploadedAudios.map(async (slot) => {
+                    const response = await fetch(slot.objectUrl);
+                    const arrayBuffer = await response.arrayBuffer();
+                    slot.buffer = await audioContext.decodeAudioData(arrayBuffer);
+                }));
+                totalDuration = Math.max(0, ...uploadedAudios.map(s => s.endTime));
+            } else {
+                if (!audioUrl) {
+                    showModal("Vui lòng tạo âm thanh từ văn bản trước khi quay.");
+                    return;
+                }
+                finalAudioUrl = audioUrl;
+            }
+
+            handleStop();
+
+            recordBtnText.textContent = 'Đang chuẩn bị...';
+            recordBtn.disabled = true;
+            recordBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const canvas = document.getElementById('poem-display-canvas');
+            
+            const resolution = resolutionSelect.value;
+            let width, height;
+            switch(resolution) {
+                case '1080': width = 1920; height = 1080; break;
+                case '720': width = 1280; height = 720; break;
+                case '480': width = 854; height = 480; break;
+                default: width = 1280; height = 720;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const context = canvas.getContext('2d');
+            
+            const poemFontSize = canvas.height * 0.08;
+            const lineHeight = poemFontSize * 1.5;
+            const padding = canvas.width * 0.05;
+            context.font = `${poemFontSize}px 'Inter', sans-serif`;
+            textLines = preprocessTextIntoLines(context, poemTextarea.value, canvas.width - padding * 2);
+
+            try {
+                if (audioSourceTextRadio.checked) {
+                    audioRef = new Audio(finalAudioUrl);
+                    await new Promise((resolve) => { audioRef.onloadedmetadata = () => { totalDuration = audioRef.duration; resolve(); } });
+                }
+                
+                const maxImageTime = Math.max(0, ...backgroundSlots.filter(s => s.file).map(s => s.endTime));
+                totalDuration = Math.max(totalDuration, maxImageTime);
+
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+
+                const videoStream = canvas.captureStream(30);
+                const audioDestination = audioContext.createMediaStreamDestination();
+
+                if (audioSourceUploadRadio.checked) {
+                    audioSlots.filter(s => s.buffer).forEach(slot => {
+                        const source = audioContext.createBufferSource();
+                        source.buffer = slot.buffer;
+                        source.connect(audioDestination);
+                        source.connect(audioContext.destination); // FIX: Playback for user
+                        source.start(audioContext.currentTime + slot.startTime, 0, slot.endTime - slot.startTime);
+                    });
+                } else {
+                    const audioSource = audioContext.createMediaElementSource(audioRef);
+                    audioSource.connect(audioDestination);
+                    audioSource.connect(audioContext.destination);
+                }
+
+                const combinedStream = new MediaStream([
+                    ...videoStream.getVideoTracks(),
+                    ...audioDestination.stream.getAudioTracks()
+                ]);
+                
+                mediaRecorder = new MediaRecorder(combinedStream, { mimeType: 'video/webm' });
+                recordedChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) recordedChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+                    videoUrl = URL.createObjectURL(videoBlob);
+                    downloadVideoBtn.href = videoUrl;
+                    downloadVideoBtn.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+                    downloadVideoBtn.classList.add('hover:bg-pink-700', 'hover:scale-105');
+                    showModal("Quay màn hình đã dừng. Bạn có thể tải video xuống.");
+                    
+                    recordBtnText.textContent = 'Quay màn hình';
+                    recordCountdown.classList.add('hidden');
+                    recordBtn.disabled = false;
+                    recordBtn.classList.remove('bg-red-600', 'hover:bg-red-700', 'opacity-50', 'cursor-not-allowed');
+                    recordBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
+                    
+                    if(animationFrameId) cancelAnimationFrame(animationFrameId);
+                    handleStop();
+                };
+                
+                const drawImageContain = (ctx, img, alpha = 1, scale = 1, xOffset = 0) => {
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    const canvas = ctx.canvas;
+                    const hRatio = canvas.width / img.width;
+                    const vRatio = canvas.height / img.height;
+                    const ratio = Math.min(hRatio, vRatio) * scale;
+                    const centerShift_x = (canvas.width - img.width * ratio) / 2;
+                    const centerShift_y = (canvas.height - img.height * ratio) / 2;
+                    ctx.drawImage(img, 0, 0, img.width, img.height,
+                                  centerShift_x + xOffset, centerShift_y, img.width * ratio, img.height * ratio);
+                    ctx.restore();
+                }
+                
+                const titleTextForDuration = poemTitleInput.value;
+                const poemTextForDuration = poemTextarea.value;
+                const titleWeight = titleTextForDuration.length;
+                const poemWeight = poemTextForDuration.length;
+                let titleDuration = 0;
+                if (titleWeight + poemWeight > 0) {
+                    titleDuration = (titleWeight / (titleWeight + poemWeight)) * totalDuration * 1000 + 500; 
+                }
+                let recordingStartTime = 0;
+                let currentBgIndex = -1;
+                let previousBgIndex = -1;
+                let transitionStartTime = -1;
+                const TRANSITION_DURATION = 1.0; // 1 second
+
+                const drawPoemOnCanvas = (elapsedTime) => {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Background and Transition Logic
+                    const newBgIndex = backgroundSlots.findIndex(bg => bg.file && elapsedTime >= bg.startTime && elapsedTime <= bg.endTime);
+                    if (newBgIndex !== currentBgIndex) {
+                        previousBgIndex = currentBgIndex;
+                        currentBgIndex = newBgIndex;
+                        transitionStartTime = elapsedTime;
+                    }
+
+                    const currentBg = backgroundSlots[currentBgIndex];
+                    const previousBg = backgroundSlots[previousBgIndex];
+                    const transitionProgress = Math.min(1.0, (elapsedTime - transitionStartTime) / TRANSITION_DURATION);
+
+                    // Draw background
+                    context.fillStyle = '#000000';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+
+                    if (previousBg && previousBg.imageObject.complete && transitionProgress < 1) {
+                         drawImageContain(context, previousBg.imageObject, 1 - transitionProgress);
+                    }
+                    if (currentBg && currentBg.imageObject.complete) {
+                        let alpha = 1, scale = 1, xOffset = 0;
+                        if (transitionStartTime > 0 && previousBgIndex !== -1) { // Apply transition only on change
+                            switch (currentBg.transition) {
+                                case 'fade': alpha = transitionProgress; break;
+                                case 'zoomin': scale = 0.8 + 0.2 * transitionProgress; break;
+                                case 'zoomout': scale = 1.2 - 0.2 * transitionProgress; break;
+                                case 'slideleft': xOffset = canvas.width * (1 - transitionProgress); break;
+                            }
+                        }
+                        drawImageContain(context, currentBg.imageObject, alpha, scale, xOffset);
+                    }
+                    
+                    context.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+
+                    if (elapsedTime > totalDuration) {
+                        const endScreenLines = endScreenTextarea.value.split('\n');
+                        context.fillStyle = '#FFFFFF';
+                        context.textAlign = 'center';
+                        context.textBaseline = 'middle';
+                        
+                        let startY = canvas.height / 2 - ((endScreenLines.length - 1) * 35);
+                        
+                        endScreenLines.forEach((line, index) => {
+                            context.font = `bold ${canvas.height * 0.05}px 'Inter', sans-serif`;
+                            if (index > 0) {
+                                context.font = `${canvas.height * 0.04}px 'Inter', sans-serif`;
+                            }
+                            context.strokeText(line, canvas.width / 2, startY + (index * 70));
+                            context.fillText(line, canvas.width / 2, startY + (index * 70));
+                        });
+                        return;
+                    }
+
+                    if (hideTextCheckbox.checked) {
+                        return; // Bỏ qua việc vẽ text nếu người dùng chọn ẩn
+                    }
+
+                    const titleText = poemTitleInput.value || "Nội dung của bạn";
+                    const selectedColor = colorSelect.value;
+                    const font = 'Inter, sans-serif';
+
+                    // Find current line
+                    let currentLineIndex = textLines.findIndex(line => window.currentWordIndex >= line.startWordIndex && window.currentWordIndex <= line.endWordIndex);
+                    if (currentLineIndex === -1 && window.currentWordIndex > 0) {
+                        currentLineIndex = textLines.length - 1;
+                    } else if (currentLineIndex === -1 && window.currentWordIndex === -1) {
+                         currentLineIndex = 0; // Start with the first line
+                    }
+
+                    const line1 = textLines[currentLineIndex];
+                    const line2 = textLines[currentLineIndex + 1];
+
+                    const y2 = canvas.height - padding;
+                    const y1 = y2 - lineHeight;
+                    const titleY = y1 - (lineHeight * 0.5);
+                    
+                    context.strokeStyle = 'black';
+                    context.lineWidth = 4;
+                    context.textBaseline = 'bottom';
+                    context.textAlign = 'center';
+
+                    if (elapsedTime * 1000 < titleDuration) {
+                        context.font = `bold ${canvas.height * 0.10}px ${font}`;
+                        context.fillStyle = '#FFFFFF';
+                        context.strokeText(titleText, canvas.width / 2, titleY);
+                        context.fillText(titleText, canvas.width / 2, titleY);
+                    }
+                    
+                    context.font = `${poemFontSize}px ${font}`;
+
+                    if (line1) {
+                        const wordsInLine1 = line1.text.split(/(\s+)/).filter(Boolean);
+                        let currentX = canvas.width / 2 - context.measureText(line1.text).width / 2;
+                        let wordCounter = line1.startWordIndex;
+                        wordsInLine1.forEach(word => {
+                            let isHighlighted = (wordCounter >= line1.startWordIndex && wordCounter <= window.currentWordIndex);
+                            if (selectedColor === 'none') isHighlighted = false;
+                            
+                            context.fillStyle = isHighlighted ? selectedColor : '#FFFFFF';
+                            context.strokeText(word, currentX, y1);
+                            context.fillText(word, currentX, y1);
+                            currentX += context.measureText(word).width;
+                            if (/\S/.test(word)) wordCounter++;
+                        });
+                    }
+                    if (line2) {
+                        context.fillStyle = '#FFFFFF';
+                        context.strokeText(line2.text, canvas.width / 2, y2);
+                        context.fillText(line2.text, canvas.width / 2, y2);
+                    }
+                };
+                
+                const totalWeight = words.reduce((acc, word) => acc + word.length + (/[.,?!]/.test(word) ? 2 : 0), 0);
+                let wordIndex = 0;
+
+                function highlightNextWord() {
+                    if (wordIndex < words.length) {
+                        const word = words[wordIndex];
+                        const wordWeight = word.length + (/[.,?!]/.test(word) ? 2 : 0);
+                        const estimatedDuration = (wordWeight / totalWeight) * totalDuration * 1000;
+
+                        window.currentWordIndex = wordIndex;
+                        currentWordIndex = wordIndex;
+                        wordIndex++;
+
+                        timeoutId = setTimeout(highlightNextWord, estimatedDuration);
+                    }
+                }
+                
+                recordingStartTime = performance.now();
+                mediaRecorder.start();
+                if (audioSourceTextRadio.checked) {
+                    audioRef.play();
+                    highlightNextWord();
+                }
+                
+                recordBtnText.textContent = 'Dừng quay';
+                recordCountdown.classList.remove('hidden');
+                recordBtn.disabled = false;
+                recordBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700', 'opacity-50', 'cursor-not-allowed');
+                recordBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                
+                const animate = () => {
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                        const elapsedTime = (performance.now() - recordingStartTime) / 1000;
+                        const remainingTime = Math.max(0, totalDuration + 10 - elapsedTime);
+                        recordCountdown.textContent = `(${remainingTime.toFixed(1)}s)`;
+                        
+                        drawPoemOnCanvas(elapsedTime);
+                        animationFrameId = requestAnimationFrame(animate);
+                    }
+                };
+                animationFrameId = requestAnimationFrame(animate);
+                
+                setTimeout(() => {
+                    if (mediaRecorder.state === 'recording') {
+                        mediaRecorder.stop();
+                    }
+                }, (totalDuration * 1000) + 10500); // Stop recording after total duration + 10s end screen + buffer
+
+            } catch (err) {
+                console.error("Lỗi khi quay màn hình:", err);
+                showModal("Lỗi: Không thể bắt đầu quay màn hình. Vui lòng cấp quyền.");
+                recordBtnText.textContent = 'Quay màn hình';
+                recordCountdown.classList.add('hidden');
+                recordBtn.disabled = false;
+                recordBtn.classList.remove('bg-red-600', 'hover:bg-red-700', 'opacity-50', 'cursor-not-allowed');
+                recordBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+        }
+        
+        function toggleRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            } else {
+                startCombinedWorkflow();
+            }
+        }
+
+        function handlePlay() {
+            if (!audioUrl) return;
+
+            handleStop();
+            audioRef = new Audio(audioUrl);
+
+            playBtn.textContent = 'Đang phát...';
+            playBtn.disabled = true;
+            playBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            stopBtn.disabled = false;
+            stopBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            stopBtn.classList.add('hover:bg-red-700', 'hover:scale-105');
+
+            audioRef.play();
+            
+            const selectedColorClass = colorMap[colorSelect.value];
+            const allWordsSpans = document.querySelectorAll('#poem-content span');
+            
+            const titleTextForDuration = poemTitleInput.value;
+            const poemTextForDuration = poemTextarea.value;
+            const titleWeight = titleTextForDuration.length;
+            const poemWeight = poemTextForDuration.length;
+            let titleDuration = 0;
+
+            audioRef.onloadedmetadata = () => {
+                const totalDuration = audioRef.duration;
+                if (titleWeight + poemWeight > 0) {
+                    titleDuration = (titleWeight / (titleWeight + poemWeight)) * totalDuration * 1000 + 500;
+                }
+                
+                if (titleTextForDuration) {
+                    const titleTimeoutId = setTimeout(() => {
+                        poemTitleDisplay.style.opacity = '0';
+                    }, titleDuration);
+                    timeoutIds.push(titleTimeoutId);
+                }
+
+                const totalWeight = words.reduce((acc, word) => acc + word.length + (/[.,?!]/.test(word) ? 2 : 0), 0);
+                let wordIndex = 0;
+
+                function highlightNextWord() {
+                    if (wordIndex < words.length) {
+                        const word = words[wordIndex];
+                        const wordWeight = word.length + (/[.,?!]/.test(word) ? 2 : 0);
+                        const estimatedDuration = (wordWeight / totalWeight) * totalDuration * 1000;
+
+                        if (currentWordIndex >= 0 && allWordsSpans[currentWordIndex]) {
+                            allWordsSpans[currentWordIndex].classList.remove('font-bold', selectedColorClass);
+                        }
+                        
+                        if (allWordsSpans[wordIndex] && colorSelect.value !== 'none') {
+                            allWordsSpans[wordIndex].classList.add('font-bold', selectedColorClass);
+                            allWordsSpans[wordIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                        
+                        currentWordIndex = wordIndex;
+                        wordIndex++;
+
+                        const highlightTimeoutId = setTimeout(highlightNextWord, estimatedDuration);
+                        timeoutIds.push(highlightTimeoutId);
+                    }
+                }
+                highlightNextWord();
+            };
+
+            audioRef.onended = () => {
+                handleStop();
+            };
+        }
+
+        function handleStop() {
+            if (audioRef) {
+                audioRef.pause();
+                audioRef.currentTime = 0;
+                audioRef = null;
+            }
+            timeoutIds.forEach(id => clearTimeout(id));
+            timeoutIds = [];
+            
+            playBtn.textContent = 'Phát';
+            if (audioUrl) {
+              playBtn.disabled = false;
+              playBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+              playBtn.classList.add('hover:bg-green-700', 'hover:scale-105');
+            }
+            
+            stopBtn.disabled = true;
+            stopBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            stopBtn.classList.remove('hover:bg-red-700', 'hover:scale-105');
+            
+            poemTitleDisplay.style.transition = 'none';
+            poemTitleDisplay.style.opacity = '1';
+            
+            const selectedColorClass = colorMap[colorSelect.value];
+            const allWords = document.querySelectorAll('#poem-content span');
+            allWords.forEach(word => {
+                word.classList.remove('font-bold', selectedColorClass);
+            });
+            currentWordIndex = -1;
+            window.currentWordIndex = -1;
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (audioUrl) URL.revokeObjectURL(audioUrl);
+            if (videoUrl) URL.revokeObjectURL(videoUrl);
+            backgroundSlots.forEach(slot => {
+                if (slot.objectUrl) URL.revokeObjectURL(slot.objectUrl);
+            });
+            audioSlots.forEach(slot => {
+                if (slot.objectUrl) URL.revokeObjectURL(slot.objectUrl);
+            });
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            stopRecording();
+        });
+    </script>
+</body>
+</html>
+
