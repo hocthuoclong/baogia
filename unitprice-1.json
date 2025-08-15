@@ -1,11 +1,12 @@
 {
-  "Dây điện CVV 2.5mm² (Cadivi)": {
-    "name": "Dây điện",
-    "spec": "CVV 2.5mm²",
-    "brand": "Cadivi",
-    "materialPrice": 12700,
-    "laborPrice": 3500,
-    "unit": "m"
+  "": {
+    "name": "",
+    "spec": "",
+    "brand": "",
+    "materialPrice": ,
+    "laborPrice": ,
+    "unit": ""
   }
 }
+
 
