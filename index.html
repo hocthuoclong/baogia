@@ -869,8 +869,8 @@
                 document.body.removeChild(link);
             });
 
+            // (REWRITTEN) PDF Export Function
             exportPdfBtn.addEventListener('click', function() {
-                // (FIX) Thêm kiểm tra thư viện và trạng thái loading
                 if (typeof html2pdf === 'undefined') {
                     alert('Lỗi: Thư viện xuất PDF chưa được tải. Vui lòng kiểm tra lại kết nối mạng và thử lại.');
                     return;
@@ -880,34 +880,51 @@
                 exportPdfBtn.disabled = true;
                 exportPdfBtnText.textContent = 'Đang xử lý...';
 
-                const element = document.getElementById('result-container');
+                // 1. Clone the element to work on a copy, preventing modification of the live view
+                const elementToPrint = document.getElementById('result-container').cloneNode(true);
+
+                // 2. Prepare the clone for printing
+                const actionColumns = elementToPrint.querySelectorAll('.action-column');
+                const tableContainer = elementToPrint.querySelector('.overflow-x-auto');
+
+                // Hide action columns in the clone
+                actionColumns.forEach(col => col.style.display = 'none');
+                
+                // Make table overflow visible in the clone to prevent clipping by html2canvas
+                if (tableContainer) {
+                    tableContainer.style.overflowX = 'visible';
+                }
+
+                // 3. Append the clone off-screen so html2canvas can render it properly
+                elementToPrint.style.position = 'absolute';
+                elementToPrint.style.left = '-9999px';
+                elementToPrint.style.top = '0px';
+                // Give it a defined width to help the renderer calculate layout
+                elementToPrint.style.width = '1123px'; // A4 landscape width in pixels at 96 DPI
+                document.body.appendChild(elementToPrint);
+
                 const projectName = projectNameInput.value.trim() || 'bao_gia';
                 const filename = `Bao gia - ${projectName}.pdf`;
-                
-                const actionColumns = element.querySelectorAll('.action-column');
-                const tableContainer = element.querySelector('.overflow-x-auto');
-
-                actionColumns.forEach(col => col.style.display = 'none');
-                if (tableContainer) tableContainer.style.overflowX = 'visible';
 
                 const opt = {
-                    margin:       0.5,
-                    filename:     filename,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true },
-                    jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+                    margin: 0.5,
+                    filename: filename,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
                 };
 
-                html2pdf().from(element).set(opt).save().then(() => {
-                    actionColumns.forEach(col => col.style.display = '');
-                    if (tableContainer) tableContainer.style.overflowX = 'auto';
+                // 4. Generate PDF from the off-screen clone
+                html2pdf().from(elementToPrint).set(opt).save().then(() => {
+                    // 5. Cleanup: remove the clone and restore button state
+                    document.body.removeChild(elementToPrint);
                     exportPdfBtn.disabled = false;
                     exportPdfBtnText.textContent = originalBtnText;
                 }).catch(err => {
                     console.error("Lỗi khi xuất PDF:", err);
-                    alert("Đã có lỗi xảy ra trong quá trình xuất PDF. Vui lòng xem console để biết chi tiết.");
-                    actionColumns.forEach(col => col.style.display = '');
-                    if (tableContainer) tableContainer.style.overflowX = 'auto';
+                    alert("Đã có lỗi xảy ra trong quá trình xuất PDF.");
+                    // 5. Cleanup on error
+                    document.body.removeChild(elementToPrint);
                     exportPdfBtn.disabled = false;
                     exportPdfBtnText.textContent = originalBtnText;
                 });
