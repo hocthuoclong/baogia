@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Thư viện để xuất PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Thư viện để kéo/thả -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -51,6 +53,13 @@
             width: 90%;
             max-width: 600px;
             border-radius: 1rem;
+        }
+        .sortable-ghost {
+            opacity: 0.4;
+            background-color: #cce5ff;
+        }
+        .handle {
+            cursor: move;
         }
     </style>
 </head>
@@ -124,7 +133,7 @@
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
-                                <span id="submitBtnText">Thêm vào danh sách</span>
+                                <span id="submitBtnText">Thêm Vật tư</span>
                             </button>
                         </div>
                     </div>
@@ -140,6 +149,16 @@
                         <p id="displayProjectName" class="text-lg font-semibold text-slate-800">Chưa có tên</p>
                     </div>
                 </div>
+
+                <!-- Form thêm hạng mục -->
+                <div class="flex items-center space-x-2 mb-4">
+                    <input type="text" id="categoryName" class="flex-grow px-4 py-2 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Tên hạng mục mới...">
+                    <button id="addCategoryBtn" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3ZM2 7.5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1ZM2 12a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1Z" /></svg>
+                        Thêm Hạng mục
+                    </button>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-slate-200 rounded-lg">
                         <thead class="bg-slate-100">
@@ -298,6 +317,8 @@
             const freeTrialBtn = document.getElementById('freeTrialBtn');
             const keyError = document.getElementById('keyError');
             const userLevelDisplay = document.getElementById('user-level-display');
+            const categoryNameInput = document.getElementById('categoryName');
+            const addCategoryBtn = document.getElementById('addCategoryBtn');
 
             let addedItems = [];
             let itemPriceData = {};
@@ -347,8 +368,9 @@
             
             function updateUserLevelDisplay() {
                 const limitText = itemLimit === Infinity ? 'Không giới hạn' : itemLimit;
+                const itemCount = addedItems.filter(item => item.type === 'item').length;
                 userLevelDisplay.innerHTML = `
-                    <span>Cấp độ: ${userLevel} (${addedItems.length}/${limitText} vật tư)</span>
+                    <span>Cấp độ: ${userLevel} (${itemCount}/${limitText} vật tư)</span>
                     <button id="logoutBtn" class="text-red-500 hover:underline ml-2">(Đăng xuất)</button>
                 `;
                 document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -382,8 +404,16 @@
                     let foundLevel = null;
                     if(savedKey) {
                         for (const level of Object.values(keyData)) {
-                            if (level.keys.includes(savedKey)) {
-                                foundLevel = level;
+                             if (level.keys.some(k => k.code === savedKey)) {
+                                const keyInfo = level.keys.find(k => k.code === savedKey);
+                                const now = new Date();
+                                const start = new Date(keyInfo.startDate);
+                                const end = new Date(keyInfo.endDate);
+                                now.setHours(0,0,0,0); // So sánh ngày, bỏ qua giờ
+                                
+                                if (now >= start && now <= end) {
+                                    foundLevel = level;
+                                }
                                 break;
                             }
                         }
@@ -392,6 +422,7 @@
                     if (foundLevel) {
                         setUserLevel(foundLevel);
                     } else {
+                        localStorage.removeItem(LOCAL_STORAGE_KEY_LICENSE); // Xóa key cũ nếu không hợp lệ
                         keyModal.style.display = 'flex';
                     }
                 } catch (e) {
@@ -403,18 +434,36 @@
             submitKeyBtn.addEventListener('click', () => {
                 const enteredKey = keyInput.value.trim();
                 let foundLevel = null;
+                let keyInfo = null;
+
                 for (const level of Object.values(keyData)) {
-                    if (level.keys.includes(enteredKey)) {
+                    const foundKeyInfo = level.keys.find(k => k.code === enteredKey);
+                    if (foundKeyInfo) {
                         foundLevel = level;
+                        keyInfo = foundKeyInfo;
                         break;
                     }
                 }
 
-                if (foundLevel) {
-                    localStorage.setItem(LOCAL_STORAGE_KEY_LICENSE, enteredKey);
-                    keyError.classList.add('hidden');
-                    setUserLevel(foundLevel);
+                if (foundLevel && keyInfo) {
+                    const now = new Date();
+                    const start = new Date(keyInfo.startDate);
+                    const end = new Date(keyInfo.endDate);
+                    now.setHours(0,0,0,0);
+
+                    if (now < start) {
+                        keyError.textContent = `Mã khóa sẽ có hiệu lực từ ngày ${start.toLocaleDateString('vi-VN')}.`;
+                        keyError.classList.remove('hidden');
+                    } else if (now > end) {
+                        keyError.textContent = `Mã khóa đã hết hạn vào ngày ${end.toLocaleDateString('vi-VN')}.`;
+                        keyError.classList.remove('hidden');
+                    } else {
+                        localStorage.setItem(LOCAL_STORAGE_KEY_LICENSE, enteredKey);
+                        keyError.classList.add('hidden');
+                        setUserLevel(foundLevel);
+                    }
                 } else {
+                    keyError.textContent = 'Mã khóa không hợp lệ. Vui lòng thử lại.';
                     keyError.classList.remove('hidden');
                 }
             });
@@ -457,7 +506,7 @@
                     cancelEditBtn.classList.remove('hidden');
                     itemFullNameInput.required = false;
                 } else {
-                    submitBtnText.textContent = 'Thêm vào danh sách';
+                    submitBtnText.textContent = 'Thêm Vật tư';
                     submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
                     submitBtn.classList.remove('bg-orange-500', 'hover:bg-orange-600');
                     cancelEditBtn.classList.add('hidden');
@@ -473,6 +522,7 @@
                 itemListBody.innerHTML = ''; 
                 let grandTotalMaterial = 0;
                 let grandTotalLabor = 0;
+                let itemCounter = 0;
 
                 const projectName = projectNameInput.value.trim();
                 displayProjectName.textContent = projectName || 'Chưa có tên';
@@ -486,37 +536,49 @@
                     itemListBody.appendChild(emptyRow);
                 } else {
                     addedItems.forEach((item, index) => {
-                        const materialSubtotal = item.quantity * item.materialPrice;
-                        const laborSubtotal = item.quantity * item.laborPrice;
-                        const totalSubtotal = materialSubtotal + laborSubtotal;
-                        grandTotalMaterial += materialSubtotal;
-                        grandTotalLabor += laborSubtotal;
-
                         const row = document.createElement('tr');
+                        row.dataset.id = index; // For SortableJS
                         
-                        if (item.materialPrice === 0 || item.laborPrice === 0) {
-                            row.className = 'table-row-animation bg-yellow-100 hover:bg-yellow-200';
-                        } else {
-                            row.className = 'table-row-animation hover:bg-slate-50';
-                        }
-
-                        row.innerHTML = `
-                            <td class="px-4 py-3 text-sm text-slate-700">${index + 1}</td>
-                            <td class="px-4 py-3 text-sm font-medium text-slate-900">${item.name}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700">${item.spec}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700">${item.brand}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700">${item.unit}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700">${item.quantity.toLocaleString('vi-VN')}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700">${item.materialPrice.toLocaleString('vi-VN')}</td>
-                            <td class="px-4 py-3 text-sm text-slate-700">${item.laborPrice.toLocaleString('vi-VN')}</td>
-                            <td class="px-4 py-3 text-sm font-semibold text-slate-900">${totalSubtotal.toLocaleString('vi-VN')}</td>
-                            <td class="px-4 py-3 text-center action-column">
-                                <div class="flex justify-center items-center space-x-2">
-                                    <button class="edit-btn text-blue-500 hover:text-blue-700" data-index="${index}"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" /><path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" /></svg></button>
+                        if(item.type === 'category') {
+                             row.className = 'bg-blue-100 font-bold';
+                             row.innerHTML = `
+                                <td class="px-4 py-2 handle text-blue-800" colspan="9">${item.name}</td>
+                                <td class="px-4 py-2 text-center action-column">
                                     <button class="delete-btn text-red-500 hover:text-red-700" data-index="${index}"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.067-2.09 1.02-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg></button>
-                                </div>
-                            </td>
-                        `;
+                                </td>
+                             `;
+                        } else {
+                            itemCounter++;
+                            const materialSubtotal = item.quantity * item.materialPrice;
+                            const laborSubtotal = item.quantity * item.laborPrice;
+                            const totalSubtotal = materialSubtotal + laborSubtotal;
+                            grandTotalMaterial += materialSubtotal;
+                            grandTotalLabor += laborSubtotal;
+                            
+                            if (item.materialPrice === 0 || item.laborPrice === 0) {
+                                row.className = 'table-row-animation bg-yellow-100 hover:bg-yellow-200';
+                            } else {
+                                row.className = 'table-row-animation hover:bg-slate-50';
+                            }
+
+                            row.innerHTML = `
+                                <td class="px-4 py-3 text-sm text-slate-700 handle">${itemCounter}</td>
+                                <td class="px-4 py-3 text-sm font-medium text-slate-900">${item.name}</td>
+                                <td class="px-4 py-3 text-sm text-slate-700">${item.spec}</td>
+                                <td class="px-4 py-3 text-sm text-slate-700">${item.brand}</td>
+                                <td class="px-4 py-3 text-sm text-slate-700">${item.unit}</td>
+                                <td class="px-4 py-3 text-sm text-slate-700">${item.quantity.toLocaleString('vi-VN')}</td>
+                                <td class="px-4 py-3 text-sm text-slate-700">${item.materialPrice.toLocaleString('vi-VN')}</td>
+                                <td class="px-4 py-3 text-sm text-slate-700">${item.laborPrice.toLocaleString('vi-VN')}</td>
+                                <td class="px-4 py-3 text-sm font-semibold text-slate-900">${totalSubtotal.toLocaleString('vi-VN')}</td>
+                                <td class="px-4 py-3 text-center action-column">
+                                    <div class="flex justify-center items-center space-x-2">
+                                        <button class="edit-btn text-blue-500 hover:text-blue-700" data-index="${index}"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" /><path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" /></svg></button>
+                                        <button class="delete-btn text-red-500 hover:text-red-700" data-index="${index}"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.067-2.09 1.02-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg></button>
+                                    </div>
+                                </td>
+                            `;
+                        }
                         itemListBody.appendChild(row);
                     });
                 }
@@ -571,7 +633,8 @@
                 event.preventDefault();
                 
                 const currentIndex = parseInt(editIndexInput.value, 10);
-                if (addedItems.length >= itemLimit && currentIndex === -1) {
+                const currentItemCount = addedItems.filter(item => item.type === 'item').length;
+                if (currentItemCount >= itemLimit && currentIndex === -1) {
                     alert(`Bạn đã đạt đến giới hạn ${itemLimit} vật tư cho cấp độ "${userLevel}".`);
                     return;
                 }
@@ -580,6 +643,7 @@
                 let laborPrice = parseFloat(itemLaborPriceInput.value);
 
                 const item = {
+                    type: 'item',
                     name: itemNameInput.value.trim(),
                     spec: itemSpecInput.value.trim(),
                     brand: itemBrandInput.value.trim(),
@@ -609,7 +673,7 @@
                         const customData = getCustomData();
                         const fullName = `${item.name} ${item.spec} (${item.brand})`.replace(/\s+/g, ' ').trim();
                         customData[fullName] = { ...item };
-                        delete customData[fullName].quantity; // Không lưu số lượng
+                        delete customData[fullName].quantity;
                         saveCustomData(customData);
                         itemPriceData = { ...itemPriceData, ...customData };
                         populateDatalist();
@@ -619,6 +683,15 @@
                 renderList();
                 setEditMode(false);
                 itemFullNameInput.focus();
+            });
+            
+            addCategoryBtn.addEventListener('click', () => {
+                const categoryName = categoryNameInput.value.trim();
+                if (categoryName) {
+                    addedItems.push({ type: 'category', name: categoryName });
+                    renderList();
+                    categoryNameInput.value = '';
+                }
             });
 
             itemListBody.addEventListener('click', function(event) {
@@ -673,17 +746,23 @@
                 csvContent += "STT,Tên vật tư,Quy cách,Nhãn hiệu,Đơn vị,Số lượng,ĐG Vật tư,TT Vật tư,ĐG Nhân công,TT Nhân công,Tổng cộng\r\n";
 
                 let totalMaterial = 0, totalLabor = 0;
-                addedItems.forEach((item, index) => {
-                    const materialSub = item.quantity * item.materialPrice;
-                    const laborSub = item.quantity * item.laborPrice;
-                    const totalSub = materialSub + laborSub;
-                    totalMaterial += materialSub;
-                    totalLabor += laborSub;
-                    const row = [
-                        index + 1, `"${item.name.replace(/"/g, '""')}"`, `"${item.spec.replace(/"/g, '""')}"`, `"${item.brand.replace(/"/g, '""')}"`,
-                        item.unit, item.quantity, item.materialPrice, materialSub, item.laborPrice, laborSub, totalSub
-                    ].join(',');
-                    csvContent += row + "\r\n";
+                let itemCounter = 0;
+                addedItems.forEach((item) => {
+                    if (item.type === 'category') {
+                        csvContent += `,"${item.name.replace(/"/g, '""')}"\r\n`;
+                    } else {
+                        itemCounter++;
+                        const materialSub = item.quantity * item.materialPrice;
+                        const laborSub = item.quantity * item.laborPrice;
+                        const totalSub = materialSub + laborSub;
+                        totalMaterial += materialSub;
+                        totalLabor += laborSub;
+                        const row = [
+                            itemCounter, `"${item.name.replace(/"/g, '""')}"`, `"${item.spec.replace(/"/g, '""')}"`, `"${item.brand.replace(/"/g, '""')}"`,
+                            item.unit, item.quantity, item.materialPrice, materialSub, item.laborPrice, laborSub, totalSub
+                        ].join(',');
+                        csvContent += row + "\r\n";
+                    }
                 });
                 
                 const subTotal = totalMaterial + totalLabor;
@@ -779,6 +858,16 @@
                         renderCustomDataList(); // Cập nhật lại danh sách trong modal
                     }
                 }
+            });
+
+            new Sortable(itemListBody, {
+                animation: 150,
+                handle: '.handle',
+                onEnd: function (evt) {
+                    const item = addedItems.splice(evt.oldIndex, 1)[0];
+                    addedItems.splice(evt.newIndex, 0, item);
+                    renderList();
+                },
             });
 
 
