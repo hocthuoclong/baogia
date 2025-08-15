@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Thư viện để xuất PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Thư viện để kéo/thả -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
@@ -249,7 +249,7 @@
                 <div class="flex items-center space-x-4">
                     <button id="exportPdfBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5Zm0 2h10v12H5V4ZM9.5 7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V7.5a.5.5 0 0 1 .5-.5Zm-2 3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5Zm4-3a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5Z" clip-rule="evenodd" /></svg>
-                      Xuất ra file PDF
+                      <span id="exportPdfBtnText">Xuất ra file PDF</span>
                     </button>
                     <button id="exportCsvBtn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -339,6 +339,7 @@
             const customEntryCheckbox = document.getElementById('customEntry');
             const exportCsvBtn = document.getElementById('exportCsvBtn');
             const exportPdfBtn = document.getElementById('exportPdfBtn');
+            const exportPdfBtnText = document.getElementById('exportPdfBtnText');
             const clearListBtn = document.getElementById('clearListBtn');
             const editIndexInput = document.getElementById('editIndex');
             const submitBtn = document.getElementById('submitBtn');
@@ -869,13 +870,25 @@
             });
 
             exportPdfBtn.addEventListener('click', function() {
+                // (FIX) Thêm kiểm tra thư viện và trạng thái loading
+                if (typeof html2pdf === 'undefined') {
+                    alert('Lỗi: Thư viện xuất PDF chưa được tải. Vui lòng kiểm tra lại kết nối mạng và thử lại.');
+                    return;
+                }
+
+                const originalBtnText = exportPdfBtnText.textContent;
+                exportPdfBtn.disabled = true;
+                exportPdfBtnText.textContent = 'Đang xử lý...';
+
                 const element = document.getElementById('result-container');
                 const projectName = projectNameInput.value.trim() || 'bao_gia';
                 const filename = `Bao gia - ${projectName}.pdf`;
-
-                // Tạm thời ẩn cột hành động
+                
                 const actionColumns = element.querySelectorAll('.action-column');
+                const tableContainer = element.querySelector('.overflow-x-auto');
+
                 actionColumns.forEach(col => col.style.display = 'none');
+                if (tableContainer) tableContainer.style.overflowX = 'visible';
 
                 const opt = {
                     margin:       0.5,
@@ -886,8 +899,17 @@
                 };
 
                 html2pdf().from(element).set(opt).save().then(() => {
-                    // Hiện lại cột hành động sau khi xuất xong
-                     actionColumns.forEach(col => col.style.display = '');
+                    actionColumns.forEach(col => col.style.display = '');
+                    if (tableContainer) tableContainer.style.overflowX = 'auto';
+                    exportPdfBtn.disabled = false;
+                    exportPdfBtnText.textContent = originalBtnText;
+                }).catch(err => {
+                    console.error("Lỗi khi xuất PDF:", err);
+                    alert("Đã có lỗi xảy ra trong quá trình xuất PDF. Vui lòng xem console để biết chi tiết.");
+                    actionColumns.forEach(col => col.style.display = '');
+                    if (tableContainer) tableContainer.style.overflowX = 'auto';
+                    exportPdfBtn.disabled = false;
+                    exportPdfBtnText.textContent = originalBtnText;
                 });
             });
             
@@ -937,11 +959,10 @@
                         delete customData[keyToDelete];
                         saveCustomData(customData);
                         
-                        // Cập nhật lại CSDL và datalist đang chạy
                         delete itemPriceData[keyToDelete];
                         populateDatalist();
                         
-                        renderCustomDataList(); // Cập nhật lại danh sách trong modal
+                        renderCustomDataList();
                     });
                 }
             });
