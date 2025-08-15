@@ -40,13 +40,15 @@
             overflow: auto; /* Enable scroll if needed */
             background-color: rgb(0,0,0); /* Fallback color */
             background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 10% auto;
+            margin: auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 90%;
             max-width: 600px;
             border-radius: 1rem;
         }
@@ -165,23 +167,37 @@
                 </div>
                 
                 <div class="mt-6 flex justify-end items-start bg-slate-100 p-4 rounded-lg">
-                    <div class="text-right space-y-2">
-                        <div class="flex justify-between items-center">
-                            <p class="text-sm font-medium text-slate-600 mr-4">Tổng chi phí vật tư:</p>
-                            <p id="totalMaterialCost" class="text-lg font-semibold text-slate-800">0 VNĐ</p>
+                    <div class="flex items-start space-x-8">
+                        <div>
+                            <label for="vatRate" class="block text-sm font-medium text-slate-700 mb-2">Thuế suất VAT (%)</label>
+                            <input type="number" id="vatRate" class="w-32 px-4 py-2 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500" value="10">
                         </div>
-                         <div class="flex justify-between items-center">
-                            <p class="text-sm font-medium text-slate-600 mr-4">Tổng chi phí nhân công:</p>
-                            <p id="totalLaborCost" class="text-lg font-semibold text-slate-800">0 VNĐ</p>
-                        </div>
-                        <div class="border-t border-slate-300 my-1"></div>
-                         <div class="flex justify-between items-center">
-                            <p class="text-base font-bold text-slate-900 mr-4">TỔNG CỘNG:</p>
-                            <p id="totalCost" class="text-2xl font-bold text-blue-600">0 VNĐ</p>
+                        <div class="text-right space-y-2 min-w-[300px]">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm font-medium text-slate-600 mr-4">Tổng chi phí vật tư:</p>
+                                <p id="totalMaterialCost" class="text-base font-semibold text-slate-800">0 VNĐ</p>
+                            </div>
+                             <div class="flex justify-between items-center">
+                                <p class="text-sm font-medium text-slate-600 mr-4">Tổng chi phí nhân công:</p>
+                                <p id="totalLaborCost" class="text-base font-semibold text-slate-800">0 VNĐ</p>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm font-medium text-slate-600 mr-4">Tổng cộng trước thuế:</p>
+                                <p id="subTotalCost" class="text-base font-semibold text-slate-800">0 VNĐ</p>
+                            </div>
+                             <div class="flex justify-between items-center">
+                                <p class="text-sm font-medium text-slate-600 mr-4">Tiền thuế GTGT (VAT):</p>
+                                <p id="vatAmount" class="text-base font-semibold text-slate-800">0 VNĐ</p>
+                            </div>
+                            <div class="border-t border-slate-300 my-1"></div>
+                             <div class="flex justify-between items-center">
+                                <p class="text-base font-bold text-slate-900 mr-4">TỔNG CỘNG CUỐI CÙNG:</p>
+                                <p id="totalCost" class="text-2xl font-bold text-blue-600">0 VNĐ</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                 <p class="text-center mt-4 text-sm font-semibold text-slate-600">Lưu ý: Tất cả đơn giá trên chưa bao gồm thuế giá trị gia tăng (VAT).</p>
+                 <p class="text-center mt-4 text-sm font-semibold text-slate-600">Lưu ý: Đơn giá vật tư & nhân công chưa bao gồm thuế giá trị gia tăng (VAT).</p>
             </div>
             
             <!-- Nút xuất file -->
@@ -199,11 +215,26 @@
             </div>
         </div>
         <footer class="text-center mt-6 text-sm text-slate-500 space-y-2">
+            <div id="user-level-display" class="font-semibold text-slate-600"></div>
             <button id="manageDataBtn" class="text-blue-600 hover:underline">Quản lý dữ liệu tùy chỉnh</button>
             <p>Một công cụ đơn giản được tạo bởi Gemini.</p>
         </footer>
     </div>
     
+    <!-- Modal Nhập Mã Khóa -->
+    <div id="keyModal" class="modal flex">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-4">Nhập Mã Khóa</h2>
+            <p class="text-slate-600 mb-4">Vui lòng nhập mã khóa để sử dụng đầy đủ tính năng. Hoặc tiếp tục với bản miễn phí (giới hạn 10 vật tư).</p>
+            <input type="text" id="keyInput" class="w-full px-4 py-3 mb-4 bg-white border-slate-300 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Nhập mã khóa của bạn...">
+            <p id="keyError" class="text-red-500 text-sm mb-4 hidden">Mã khóa không hợp lệ. Vui lòng thử lại.</p>
+            <div class="flex justify-center space-x-4">
+                <button id="submitKeyBtn" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700">Xác nhận</button>
+                <button id="freeTrialBtn" class="bg-gray-200 text-slate-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300">Dùng bản miễn phí</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Quản lý Dữ liệu -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
@@ -238,6 +269,9 @@
             const itemListBody = document.getElementById('itemListBody');
             const totalMaterialCostEl = document.getElementById('totalMaterialCost');
             const totalLaborCostEl = document.getElementById('totalLaborCost');
+            const subTotalCostEl = document.getElementById('subTotalCost');
+            const vatRateInput = document.getElementById('vatRate');
+            const vatAmountEl = document.getElementById('vatAmount');
             const totalCostEl = document.getElementById('totalCost');
             const emptyRow = document.getElementById('emptyRow');
             const customEntryCheckbox = document.getElementById('customEntry');
@@ -251,27 +285,33 @@
             const dataModal = document.getElementById('dataModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const customDataList = document.getElementById('customDataList');
-
+            const keyModal = document.getElementById('keyModal');
+            const keyInput = document.getElementById('keyInput');
+            const submitKeyBtn = document.getElementById('submitKeyBtn');
+            const freeTrialBtn = document.getElementById('freeTrialBtn');
+            const keyError = document.getElementById('keyError');
+            const userLevelDisplay = document.getElementById('user-level-display');
 
             let addedItems = [];
             let itemPriceData = {};
+            let keyData = {};
+            let userLevel = 'Free';
+            let itemLimit = 10;
             const allInputs = [itemNameInput, itemSpecInput, itemBrandInput, itemUnitInput, itemMaterialPriceInput, itemLaborPriceInput];
-            const LOCAL_STORAGE_KEY = 'customUnitPriceData';
+            const LOCAL_STORAGE_KEY_CUSTOM = 'customUnitPriceData';
+            const LOCAL_STORAGE_KEY_LICENSE = 'userLicenseKey';
 
             // --- CÁC HÀM XỬ LÝ ---
 
-            // Hàm tải dữ liệu tùy chỉnh từ localStorage
             function getCustomData() {
-                const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+                const data = localStorage.getItem(LOCAL_STORAGE_KEY_CUSTOM);
                 return data ? JSON.parse(data) : {};
             }
 
-            // Hàm lưu dữ liệu tùy chỉnh vào localStorage
             function saveCustomData(data) {
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+                localStorage.setItem(LOCAL_STORAGE_KEY_CUSTOM, JSON.stringify(data));
             }
-
-            // Hàm nạp dữ liệu vào datalist
+            
             function populateDatalist() {
                 itemOptions.innerHTML = '';
                 Object.keys(itemPriceData).sort().forEach(itemName => {
@@ -280,15 +320,67 @@
                     itemOptions.appendChild(option);
                 });
             }
+            
+            function updateUserLevelDisplay() {
+                const limitText = itemLimit === Infinity ? 'Không giới hạn' : itemLimit;
+                userLevelDisplay.textContent = `Cấp độ: ${userLevel} (${addedItems.length}/${limitText} vật tư)`;
+            }
 
-            // Hàm khởi tạo ứng dụng
+            function setUserLevel(levelDetails) {
+                if(!levelDetails) { // Free user
+                    userLevel = 'Free';
+                    itemLimit = 10;
+                } else {
+                    userLevel = `Cấp ${levelDetails.level}`;
+                    itemLimit = levelDetails.limit === 5000 ? Infinity : levelDetails.limit;
+                }
+                updateUserLevelDisplay();
+                keyModal.style.display = 'none';
+                initializeApp(); // Khởi động phần còn lại của app
+            }
+
+            async function handleAuthentication() {
+                 try {
+                    const response = await fetch('key/keylevel.json');
+                    if (!response.ok) throw new Error('Không tìm thấy file key.');
+                    keyData = await response.json();
+
+                    const savedKey = localStorage.getItem(LOCAL_STORAGE_KEY_LICENSE);
+                    if (savedKey && keyData[savedKey]) {
+                        setUserLevel(keyData[savedKey]);
+                    } else {
+                        keyModal.style.display = 'flex';
+                    }
+                } catch (e) {
+                    console.error(e);
+                    setUserLevel(null);
+                }
+            }
+            
+            submitKeyBtn.addEventListener('click', () => {
+                const enteredKey = keyInput.value.trim();
+                if (keyData[enteredKey]) {
+                    localStorage.setItem(LOCAL_STORAGE_KEY_LICENSE, enteredKey);
+                    keyError.classList.add('hidden');
+                    setUserLevel(keyData[enteredKey]);
+                } else {
+                    keyError.classList.remove('hidden');
+                }
+            });
+
+            freeTrialBtn.addEventListener('click', () => {
+                localStorage.removeItem(LOCAL_STORAGE_KEY_LICENSE);
+                setUserLevel(null);
+            });
+
+
             async function initializeApp() {
                 try {
                     const response = await fetch('unitprice.json');
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const baseData = await response.json();
                     const customData = getCustomData();
-                    itemPriceData = { ...baseData, ...customData }; // Gộp dữ liệu
+                    itemPriceData = { ...baseData, ...customData };
                     
                     populateDatalist();
 
@@ -376,13 +468,23 @@
                         itemListBody.appendChild(row);
                     });
                 }
+                
+                const subTotal = grandTotalMaterial + grandTotalLabor;
+                const vatRate = parseFloat(vatRateInput.value) || 0;
+                const vatAmount = subTotal * (vatRate / 100);
+                const grandTotal = subTotal + vatAmount;
+
                 totalMaterialCostEl.textContent = `${grandTotalMaterial.toLocaleString('vi-VN')} VNĐ`;
                 totalLaborCostEl.textContent = `${grandTotalLabor.toLocaleString('vi-VN')} VNĐ`;
-                totalCostEl.textContent = `${(grandTotalMaterial + grandTotalLabor).toLocaleString('vi-VN')} VNĐ`;
+                subTotalCostEl.textContent = `${subTotal.toLocaleString('vi-VN')} VNĐ`;
+                vatAmountEl.textContent = `${vatAmount.toLocaleString('vi-VN')} VNĐ`;
+                totalCostEl.textContent = `${grandTotal.toLocaleString('vi-VN')} VNĐ`;
+                updateUserLevelDisplay();
             }
 
             // --- EVENT LISTENERS ---
             projectNameInput.addEventListener('input', renderList);
+            vatRateInput.addEventListener('input', renderList);
             
             cancelEditBtn.addEventListener('click', () => setEditMode(false));
 
@@ -415,6 +517,12 @@
             itemForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 
+                const currentIndex = parseInt(editIndexInput.value, 10);
+                if (addedItems.length >= itemLimit && currentIndex === -1) {
+                    alert(`Bạn đã đạt đến giới hạn ${itemLimit} vật tư cho cấp độ "${userLevel}".`);
+                    return;
+                }
+
                 let materialPrice = parseFloat(itemMaterialPriceInput.value);
                 let laborPrice = parseFloat(itemLaborPriceInput.value);
 
@@ -439,7 +547,6 @@
                     return;
                 }
 
-                const currentIndex = parseInt(editIndexInput.value, 10);
                 if (currentIndex > -1) {
                     addedItems[currentIndex] = item;
                 } else {
@@ -518,7 +625,14 @@
                     csvContent += row + "\r\n";
                 });
                 
-                csvContent += `\r\n,,,,,,${totalMaterial},,${totalLabor},${totalMaterial + totalLabor}`;
+                const subTotal = totalMaterial + totalLabor;
+                const vatRate = parseFloat(vatRateInput.value) || 0;
+                const vatAmount = subTotal * (vatRate / 100);
+                const grandTotal = subTotal + vatAmount;
+
+                csvContent += `\r\n,,,,,,Tổng cộng trước thuế:,${subTotal}`;
+                csvContent += `\r\n,,,,,,VAT (${vatRate}%):,${vatAmount}`;
+                csvContent += `\r\n,,,,,,TỔNG CỘNG CUỐI CÙNG:,${grandTotal}`;
 
                 const encodedUri = encodeURI(csvContent);
                 const link = document.createElement("a");
@@ -608,7 +722,8 @@
 
 
             // --- KHỞI TẠO ---
-            initializeApp();
+            handleAuthentication();
+            renderList();
         });
     </script>
 </body>
