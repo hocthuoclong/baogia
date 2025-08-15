@@ -26,6 +26,28 @@
                 transform: translateY(0);
             }
         }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 1rem;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 flex items-center justify-center min-h-screen p-4">
@@ -34,7 +56,7 @@
         <div id="main-content" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Công cụ Tính chi phí Vật tư & Nhân công</h1>
-                <p class="text-slate-500 mt-2">Tra cứu vật tư có sẵn hoặc thêm tùy chỉnh và xuất báo giá ra file CSV.</p>
+                <p class="text-slate-500 mt-2">Tra cứu vật tư, thêm tùy chỉnh, lưu trữ và xuất báo giá ra file CSV.</p>
             </div>
 
             <!-- Trạng thái tải dữ liệu -->
@@ -155,11 +177,26 @@
                 </div>
             </div>
         </div>
-        <footer class="text-center mt-6 text-sm text-slate-500 space-y-1">
+        <footer class="text-center mt-6 text-sm text-slate-500 space-y-2">
+            <button id="manageDataBtn" class="text-blue-600 hover:underline">Quản lý dữ liệu tùy chỉnh</button>
             <p>Một công cụ đơn giản được tạo bởi Gemini.</p>
             <p class="font-semibold text-slate-600">Lưu ý: Tất cả đơn giá trên chưa bao gồm thuế giá trị gia tăng (VAT).</p>
         </footer>
     </div>
+    
+    <!-- Modal Quản lý Dữ liệu -->
+    <div id="dataModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Quản lý Vật tư Tùy chỉnh</h2>
+                <button id="closeModalBtn" class="text-2xl font-bold">&times;</button>
+            </div>
+            <div id="customDataList" class="max-h-96 overflow-y-auto">
+                <!-- Danh sách vật tư tùy chỉnh sẽ được thêm vào đây -->
+            </div>
+        </div>
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -187,42 +224,64 @@
             const submitBtn = document.getElementById('submitBtn');
             const submitBtnText = document.getElementById('submitBtnText');
             const cancelEditBtn = document.getElementById('cancelEditBtn');
+            const manageDataBtn = document.getElementById('manageDataBtn');
+            const dataModal = document.getElementById('dataModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const customDataList = document.getElementById('customDataList');
+
 
             let addedItems = [];
             let itemPriceData = {};
             const allInputs = [itemNameInput, itemSpecInput, itemBrandInput, itemUnitInput, itemMaterialPriceInput, itemLaborPriceInput];
-
-            // --- LẤY DỮ LIỆU TỪ FILE JSON ---
-            try {
-                const response = await fetch('unitprice.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                itemPriceData = await response.json();
-                
-                // Cập nhật giao diện khi tải thành công
-                dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
-                dataStatus.classList.add('bg-green-100', 'text-green-800');
-                dataStatus.textContent = 'Cơ sở dữ liệu đã sẵn sàng.';
-                formFieldset.disabled = false; // Mở khóa form
-                setTimeout(() => { dataStatus.style.opacity = 0; }, 2000);
-
-            } catch (error) {
-                console.error('Không thể tải file unitprice.json:', error);
-                // Cập nhật giao diện khi có lỗi
-                dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
-                dataStatus.classList.add('bg-red-100', 'text-red-800');
-                dataStatus.textContent = 'Lỗi: Không thể tải được cơ sở dữ liệu đơn giá. Vui lòng đảm bảo file unitprice.json tồn tại và đặt cùng cấp với file index.html.';
-                return; // Dừng thực thi
-            }
-
+            const LOCAL_STORAGE_KEY = 'customUnitPriceData';
 
             // --- CÁC HÀM XỬ LÝ ---
-            Object.keys(itemPriceData).forEach(itemName => {
-                const option = document.createElement('option');
-                option.value = itemName;
-                itemOptions.appendChild(option);
-            });
+
+            // Hàm tải dữ liệu tùy chỉnh từ localStorage
+            function getCustomData() {
+                const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+                return data ? JSON.parse(data) : {};
+            }
+
+            // Hàm lưu dữ liệu tùy chỉnh vào localStorage
+            function saveCustomData(data) {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+            }
+
+            // Hàm nạp dữ liệu vào datalist
+            function populateDatalist() {
+                itemOptions.innerHTML = '';
+                Object.keys(itemPriceData).sort().forEach(itemName => {
+                    const option = document.createElement('option');
+                    option.value = itemName;
+                    itemOptions.appendChild(option);
+                });
+            }
+
+            // Hàm khởi tạo ứng dụng
+            async function initializeApp() {
+                try {
+                    const response = await fetch('unitprice.json');
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const baseData = await response.json();
+                    const customData = getCustomData();
+                    itemPriceData = { ...baseData, ...customData }; // Gộp dữ liệu
+                    
+                    populateDatalist();
+
+                    dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
+                    dataStatus.classList.add('bg-green-100', 'text-green-800');
+                    dataStatus.textContent = 'Cơ sở dữ liệu đã sẵn sàng.';
+                    formFieldset.disabled = false;
+                    setTimeout(() => { dataStatus.style.opacity = 0; }, 2000);
+
+                } catch (error) {
+                    console.error('Không thể tải file unitprice.json:', error);
+                    dataStatus.classList.remove('bg-yellow-100', 'text-yellow-800');
+                    dataStatus.classList.add('bg-red-100', 'text-red-800');
+                    dataStatus.textContent = 'Lỗi: Không thể tải được cơ sở dữ liệu. Vui lòng đảm bảo file unitprice.json tồn tại và đặt cùng cấp với file index.html.';
+                }
+            }
 
             function setEditMode(isEditing) {
                 if (isEditing) {
@@ -355,6 +414,16 @@
                     addedItems[currentIndex] = item;
                 } else {
                     addedItems.push(item);
+                    // Lưu vật tư mới nếu là tùy chỉnh
+                    if (customEntryCheckbox.checked) {
+                        const customData = getCustomData();
+                        const fullName = `${item.name} ${item.spec} (${item.brand})`.replace(/\s+/g, ' ').trim();
+                        customData[fullName] = { ...item };
+                        delete customData[fullName].quantity; // Không lưu số lượng
+                        saveCustomData(customData);
+                        itemPriceData = { ...itemPriceData, ...customData };
+                        populateDatalist();
+                    }
                 }
                 
                 renderList();
@@ -423,9 +492,64 @@
                 link.click();
                 document.body.removeChild(link);
             });
+            
+            // --- QUẢN LÝ DỮ LIỆU TÙY CHỈNH (MODAL) ---
+            function renderCustomDataList() {
+                const customData = getCustomData();
+                customDataList.innerHTML = '';
+                if (Object.keys(customData).length === 0) {
+                    customDataList.innerHTML = '<p class="text-slate-500">Không có vật tư tùy chỉnh nào được lưu.</p>';
+                    return;
+                }
+                const ul = document.createElement('ul');
+                ul.className = 'divide-y divide-gray-200';
+                Object.keys(customData).forEach(key => {
+                    const li = document.createElement('li');
+                    li.className = 'py-3 flex justify-between items-center';
+                    li.innerHTML = `
+                        <span class="text-sm">${key}</span>
+                        <button class="delete-custom-item-btn text-red-500 hover:text-red-700" data-key="${key}">Xóa</button>
+                    `;
+                    ul.appendChild(li);
+                });
+                customDataList.appendChild(ul);
+            }
+
+            manageDataBtn.addEventListener('click', () => {
+                renderCustomDataList();
+                dataModal.style.display = 'block';
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                dataModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == dataModal) {
+                    dataModal.style.display = 'none';
+                }
+            });
+
+            customDataList.addEventListener('click', (event) => {
+                if (event.target.classList.contains('delete-custom-item-btn')) {
+                    const keyToDelete = event.target.dataset.key;
+                    if (confirm(`Bạn có chắc muốn xóa vật tư "${keyToDelete}" khỏi bộ nhớ?`)) {
+                        const customData = getCustomData();
+                        delete customData[keyToDelete];
+                        saveCustomData(customData);
+                        
+                        // Cập nhật lại CSDL và datalist đang chạy
+                        delete itemPriceData[keyToDelete];
+                        populateDatalist();
+                        
+                        renderCustomDataList(); // Cập nhật lại danh sách trong modal
+                    }
+                }
+            });
+
 
             // --- KHỞI TẠO ---
-            renderList();
+            initializeApp();
         });
     </script>
 </body>
