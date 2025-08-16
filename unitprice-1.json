@@ -1,13 +1,14 @@
 {
-  "Dây điện CVV 1.7mm² (Cadivi)": {
+  "Dây điện CVV 1.5mm² (Cadivi)": {
     "name": "Dây điện",
-    "spec": "CVV 1.5mm²",
+    "spec": "CVV 1.7mm²",
     "brand": "Cadivi",
     "materialPrice": 8500,
     "laborPrice": 3500,
     "unit": "m"
   }
 }
+
 
 
 
