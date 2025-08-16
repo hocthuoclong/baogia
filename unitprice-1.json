@@ -1,5 +1,5 @@
 {
-  "Dây điện CVV 1.5mm² (Cadivi)": {
+  "Dây điện CVV 1.7mm² (Cadivi)": {
     "name": "Dây điện",
     "spec": "CVV 1.5mm²",
     "brand": "Cadivi",
@@ -8,5 +8,6 @@
     "unit": "m"
   }
 }
+
 
 
