@@ -201,7 +201,7 @@
   },
   "Cáp điện Cu/PVC 1Cx1.5 mm2 Xanh, đỏ, đen, Vàng TE (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx1.5 mm2",
-    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "spec": "Xanh, đỏ, đen, Vàng TE",
     "brand": "Cadivi",
     "materialPrice": 5281,
     "laborPrice": 2777,
@@ -209,7 +209,7 @@
   },
   "Cáp điện Cu/PVC 1Cx1.5 mm2 Xanh, đỏ, đen, Vàng TE (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx1.5 mm2",
-    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "spec": "Xanh, đỏ, đen, Vàng TE",
     "brand": "Việt Thái",
     "materialPrice": 4560,
     "laborPrice": 2777,
@@ -217,7 +217,7 @@
   },
   "Cáp điện Cu/PVC 1Cx2.5 mm2 Xanh, đỏ, đen, Vàng TE (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx2.5 mm2",
-    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "spec": "Xanh, đỏ, đen, Vàng TE",
     "brand": "Cadivi",
     "materialPrice": 8610,
     "laborPrice": 3087,
@@ -225,7 +225,7 @@
   },
   "Cáp điện Cu/PVC 1Cx2.5 mm2 Xanh, đỏ, đen, Vàng TE (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx2.5 mm2",
-    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "spec": "Xanh, đỏ, đen, Vàng TE",
     "brand": "Việt Thái",
     "materialPrice": 7440,
     "laborPrice": 3087,
@@ -233,7 +233,7 @@
   },
   "Cáp điện Cu/PVC 1Cx4 mm2 Xanh, đỏ, đen, Vàng TE (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx4 mm2",
-    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "spec": "Xanh, đỏ, đen, Vàng TE",
     "brand": "Việt Thái",
     "materialPrice": 11250,
     "laborPrice": 3593,
@@ -241,7 +241,7 @@
   },
   "Cáp điện Cu/PVC 1Cx6 mm2 Xanh, đỏ, đen, Vàng TE (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx6 mm2",
-    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "spec": "Xanh, đỏ, đen, Vàng TE",
     "brand": "Cadivi",
     "materialPrice": 18889,
     "laborPrice": 4145,
@@ -441,7 +441,7 @@
   },
   "Ống nhựa cứng luồng dây điện D20 CO20 750N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D20",
-    "spec": "CO20\n750N",
+    "spec": "CO20 750N",
     "brand": "HDV",
     "materialPrice": 5240,
     "laborPrice": 7840,
@@ -449,7 +449,7 @@
   },
   "Ống nhựa cứng luồng dây điện D20 CL20 320N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D20",
-    "spec": "CL20\n320N",
+    "spec": "CL20 320N",
     "brand": "HDV",
     "materialPrice": 4870,
     "laborPrice": 7840,
@@ -465,7 +465,7 @@
   },
   "Ống nhựa cứng luồng dây điện D25 CL25 320N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
-    "spec": "CL25\n320N",
+    "spec": "CL25 320N",
     "brand": "HDV",
     "materialPrice": 7089,
     "laborPrice": 9800,
@@ -473,7 +473,7 @@
   },
   "Ống nhựa cứng luồng dây điện D25 CO25 750N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
-    "spec": "CO25\n750N",
+    "spec": "CO25 750N",
     "brand": "HDV",
     "materialPrice": 7551,
     "laborPrice": 9800,
@@ -481,7 +481,7 @@
   },
   "Ống nhựa cứng luồng dây điện D25 MD25 750N (Sam Phú)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
-    "spec": "MD25\n750N",
+    "spec": "MD25 750N",
     "brand": "Sam Phú",
     "materialPrice": 7675,
     "laborPrice": 9800,
@@ -489,7 +489,7 @@
   },
   "Ống nhựa cứng luồng dây điện D32 MD32 750N (Sam Phú)": {
     "name": "Ống nhựa cứng luồng dây điện D32",
-    "spec": "MD32\n750N",
+    "spec": "MD32 750N",
     "brand": "Sam Phú",
     "materialPrice": 15368,
     "laborPrice": 11760,
@@ -497,7 +497,7 @@
   },
   "Ống nhựa cứng luồng dây điện D32 CL32 320N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D32",
-    "spec": "CL32\n320N",
+    "spec": "CL32 320N",
     "brand": "HDV",
     "materialPrice": 12021,
     "laborPrice": 11760,
@@ -505,7 +505,7 @@
   },
   "Ống nhựa ruột gà luồng dây điện D20 SP9020CM 50m/cuộn (Sino)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "SP9020CM\n50m/cuộn",
+    "spec": "SP9020CM 50m/cuộn",
     "brand": "Sino",
     "materialPrice": 2320,
     "laborPrice": 2613,
@@ -513,7 +513,7 @@
   },
   "Ống nhựa ruột gà luồng dây điện D20 FRG20W 50m/cuộn (Nanoco)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "FRG20W\n50m/cuộn",
+    "spec": "FRG20W 50m/cuộn",
     "brand": "Nanoco",
     "materialPrice": 2352,
     "laborPrice": 2613,
@@ -521,7 +521,7 @@
   },
   "Ống nhựa ruột gà luồng dây điện D20 TPE 40m/cuộn (Tiến Phát I)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "TPE\n40m/cuộn",
+    "spec": "TPE 40m/cuộn",
     "brand": "Tiến Phát I",
     "materialPrice": 3275,
     "laborPrice": 2613,
@@ -529,7 +529,7 @@
   },
   "Ống nhựa ruột gà luồng dây điện D20 HDPE 50m/cuộn (Tiến Phát)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "HDPE\n50m/cuộn",
+    "spec": "HDPE 50m/cuộn",
     "brand": "Tiến Phát",
     "materialPrice": 2620,
     "laborPrice": 2613,
@@ -682,7 +682,7 @@
   "Cáp mạng LAN CAT6 301-600851-03BU (Alantek China)": {
     "name": "Cáp mạng LAN CAT6",
     "spec": "301-600851-03BU",
-    "brand": "Alantek\nChina",
+    "brand": "Alantek China",
     "materialPrice": 7738,
     "laborPrice": 5227,
     "unit": "m"
