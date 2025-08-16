@@ -19,8 +19,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Thư viện để xuất PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Thư viện để kéo/thả -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
@@ -92,7 +90,7 @@
         <div id="main-content" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Công cụ lập báo giá</h1>
-                <p class="text-slate-500 mt-2">Tra cứu vật tư, thêm tùy chỉnh, lưu trữ và xuất báo giá ra file CSV/PDF.</p>
+                <p class="text-slate-500 mt-2">Tra cứu vật tư, thêm tùy chỉnh, lưu trữ và xuất báo giá ra file CSV.</p>
             </div>
 
             <!-- Tên dự án -->
@@ -247,10 +245,6 @@
                    Xóa hết danh sách
                 </button>
                 <div class="flex items-center space-x-4">
-                    <button id="exportPdfBtn" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
-                       <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5Zm0 2h10v12H5V4ZM9.5 7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V7.5a.5.5 0 0 1 .5-.5Zm-2 3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5Zm4-3a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5Z" clip-rule="evenodd" /></svg>
-                      <span id="exportPdfBtnText">Xuất ra file PDF</span>
-                    </button>
                     <button id="exportCsvBtn" class="bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-300 ease-in-out inline-flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed">
                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -338,8 +332,6 @@
             const emptyRow = document.getElementById('emptyRow');
             const customEntryCheckbox = document.getElementById('customEntry');
             const exportCsvBtn = document.getElementById('exportCsvBtn');
-            const exportPdfBtn = document.getElementById('exportPdfBtn');
-            const exportPdfBtnText = document.getElementById('exportPdfBtnText');
             const clearListBtn = document.getElementById('clearListBtn');
             const editIndexInput = document.getElementById('editIndex');
             const submitBtn = document.getElementById('submitBtn');
@@ -611,7 +603,6 @@
 
                 const hasItems = addedItems.length > 0;
                 exportCsvBtn.disabled = !hasItems;
-                exportPdfBtn.disabled = !hasItems;
                 clearListBtn.disabled = !hasItems;
 
                 if (!hasItems) {
@@ -867,67 +858,6 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            });
-
-            // (REWRITTEN) PDF Export Function
-            exportPdfBtn.addEventListener('click', function() {
-                if (typeof html2pdf === 'undefined') {
-                    alert('Lỗi: Thư viện xuất PDF chưa được tải. Vui lòng kiểm tra lại kết nối mạng và thử lại.');
-                    return;
-                }
-
-                const originalBtnText = exportPdfBtnText.textContent;
-                exportPdfBtn.disabled = true;
-                exportPdfBtnText.textContent = 'Đang xử lý...';
-
-                // 1. Clone the element to work on a copy, preventing modification of the live view
-                const elementToPrint = document.getElementById('result-container').cloneNode(true);
-
-                // 2. Prepare the clone for printing
-                const actionColumns = elementToPrint.querySelectorAll('.action-column');
-                const tableContainer = elementToPrint.querySelector('.overflow-x-auto');
-
-                // Hide action columns in the clone
-                actionColumns.forEach(col => col.style.display = 'none');
-                
-                // Make table overflow visible in the clone to prevent clipping by html2canvas
-                if (tableContainer) {
-                    tableContainer.style.overflowX = 'visible';
-                }
-
-                // 3. Append the clone off-screen so html2canvas can render it properly
-                elementToPrint.style.position = 'absolute';
-                elementToPrint.style.left = '-9999px';
-                elementToPrint.style.top = '0px';
-                // Give it a defined width to help the renderer calculate layout
-                elementToPrint.style.width = '1123px'; // A4 landscape width in pixels at 96 DPI
-                document.body.appendChild(elementToPrint);
-
-                const projectName = projectNameInput.value.trim() || 'bao_gia';
-                const filename = `Bao gia - ${projectName}.pdf`;
-
-                const opt = {
-                    margin: 0.5,
-                    filename: filename,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-                };
-
-                // 4. Generate PDF from the off-screen clone
-                html2pdf().from(elementToPrint).set(opt).save().then(() => {
-                    // 5. Cleanup: remove the clone and restore button state
-                    document.body.removeChild(elementToPrint);
-                    exportPdfBtn.disabled = false;
-                    exportPdfBtnText.textContent = originalBtnText;
-                }).catch(err => {
-                    console.error("Lỗi khi xuất PDF:", err);
-                    alert("Đã có lỗi xảy ra trong quá trình xuất PDF.");
-                    // 5. Cleanup on error
-                    document.body.removeChild(elementToPrint);
-                    exportPdfBtn.disabled = false;
-                    exportPdfBtnText.textContent = originalBtnText;
-                });
             });
             
             // --- QUẢN LÝ DỮ LIỆU TÙY CHỈNH (MODAL) ---
