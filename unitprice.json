@@ -3,816 +3,688 @@
     "name": "Nối thang Co ngang W200 x H100 x t1.6",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 192,
-    "laborPrice": 29,
+    "materialPrice": 192000,
+    "laborPrice": 29400,
     "unit": "Cái"
   },
   "Nối thang Co lên W200 x H100 x t1.6 Sơn tĩnh điện (AsiaE)": {
     "name": "Nối thang Co lên W200 x H100 x t1.6",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 192,
-    "laborPrice": 29,
+    "materialPrice": 192000,
+    "laborPrice": 29400,
     "unit": "Cái"
   },
   "Nối thang Co xuống W200 x H100 x t1.6 Sơn tĩnh điện (AsiaE)": {
     "name": "Nối thang Co xuống W200 x H100 x t1.6",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 192,
-    "laborPrice": 29,
+    "materialPrice": 192000,
+    "laborPrice": 29400,
     "unit": "Cái"
   },
   "Tê đứng W200 x H100 x t1.6 Sơn tĩnh điện (AsiaE)": {
     "name": "Tê đứng W200 x H100 x t1.6",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 207,
-    "laborPrice": 32,
+    "materialPrice": 207000,
+    "laborPrice": 32667,
     "unit": "Cái"
   },
   "Tê ngang W200 x H100 x t1.6 Sơn tĩnh điện (AsiaE)": {
     "name": "Tê ngang W200 x H100 x t1.6",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 207,
-    "laborPrice": 32,
+    "materialPrice": 207000,
+    "laborPrice": 32667,
     "unit": "Cái"
   },
   "Máng cáp W200 x H100 x t1.2 + Nắp Sơn tĩnh điện (P&D)": {
     "name": "Máng cáp W200 x H100 x t1.2 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "P&D",
-    "materialPrice": 613,
-    "laborPrice": 55,
+    "materialPrice": 613000,
+    "laborPrice": 55533,
     "unit": "m"
   },
   "Nối máng Tê W100 x H100 x t1.0 + Nắp Sơn tĩnh điện (P&D)": {
     "name": "Nối máng Tê W100 x H100 x t1.0 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "P&D",
-    "materialPrice": 269,
-    "laborPrice": 26,
+    "materialPrice": 269000,
+    "laborPrice": 26133,
     "unit": "Cái"
   },
   "Nối máng Co ngang W100 x H50 x t1.0 + Nắp Sơn tĩnh điện (P&D)": {
     "name": "Nối máng Co ngang W100 x H50 x t1.0 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "P&D",
-    "materialPrice": 125,
-    "laborPrice": 19,
+    "materialPrice": 125000,
+    "laborPrice": 19600,
     "unit": "Cái"
   },
   "Nối máng Co ngang W100 x H100 x t1.0 + Nắp Sơn tĩnh điện (P&D)": {
     "name": "Nối máng Co ngang W100 x H100 x t1.0 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "P&D",
-    "materialPrice": 175,
-    "laborPrice": 19,
+    "materialPrice": 175000,
+    "laborPrice": 19600,
     "unit": "Cái"
   },
   "Nối máng Co xuống W200 x H100 x t1.2 + Nắp Sơn tĩnh điện (P&D)": {
     "name": "Nối máng Co xuống W200 x H100 x t1.2 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "P&D",
-    "materialPrice": 175,
-    "laborPrice": 29,
+    "materialPrice": 175000,
+    "laborPrice": 29400,
     "unit": "Cái"
   },
   "Nối máng Co xuống W100 x H50 x t1.0 + Nắp Sơn tĩnh điện (P&D)": {
     "name": "Nối máng Co xuống W100 x H50 x t1.0 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "P&D",
-    "materialPrice": 81,
-    "laborPrice": 19,
+    "materialPrice": 81000,
+    "laborPrice": 19600,
     "unit": "Cái"
   },
   "Máng cáp W100 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Máng cáp W100 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 157,
-    "laborPrice": 42,
+    "materialPrice": 157000,
+    "laborPrice": 42467,
     "unit": "m"
   },
   "Nối máng Co lên W100 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Nối máng Co lên W100 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 174,
-    "laborPrice": 19,
+    "materialPrice": 174000,
+    "laborPrice": 19600,
     "unit": "Cái"
   },
   "Nối máng Co xuống W100 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Nối máng Co xuống W100 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 174,
-    "laborPrice": 19,
+    "materialPrice": 174000,
+    "laborPrice": 19600,
     "unit": "Cái"
   },
   "Nối máng Co ngang W100 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Nối máng Co ngang W100 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 174,
-    "laborPrice": 19,
+    "materialPrice": 174000,
+    "laborPrice": 19600,
     "unit": "Cái"
   },
   "Nối T ngang W100 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Nối T ngang W100 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 205,
-    "laborPrice": 26,
+    "materialPrice": 205000,
+    "laborPrice": 26133,
     "unit": "Cái"
   },
   "Máng cáp W200 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Máng cáp W200 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 222,
-    "laborPrice": 55,
+    "materialPrice": 222000,
+    "laborPrice": 55533,
     "unit": "m"
   },
   "Co ngang máng cáp W200 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Co ngang máng cáp W200 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 289,
-    "laborPrice": 29,
+    "materialPrice": 289000,
+    "laborPrice": 29400,
     "unit": "m"
   },
   "Co lên máng cáp W200 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Co lên máng cáp W200 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 289,
-    "laborPrice": 29,
+    "materialPrice": 289000,
+    "laborPrice": 29400,
     "unit": "m"
   },
   "Co xuống máng cáp W200 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Co xuống máng cáp W200 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 289,
-    "laborPrice": 29,
+    "materialPrice": 289000,
+    "laborPrice": 29400,
     "unit": "m"
   },
   "Tê ngang máng cáp W200 x H100 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Tê ngang máng cáp W200 x H100 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 311,
-    "laborPrice": 32,
+    "materialPrice": 311000,
+    "laborPrice": 32667,
     "unit": "m"
   },
   "Máng cáp W100 x H50 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Máng cáp W100 x H50 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 122,
-    "laborPrice": 42,
+    "materialPrice": 122000,
+    "laborPrice": 42467,
     "unit": "m"
   },
   "Co ngang máng cáp W100 x H50 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Co ngang máng cáp W100 x H50 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 135,
-    "laborPrice": 19,
+    "materialPrice": 135000,
+    "laborPrice": 19600,
     "unit": "m"
   },
   "Co lên máng cáp W100 x H50 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Co lên máng cáp W100 x H50 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 135,
-    "laborPrice": 19,
+    "materialPrice": 135000,
+    "laborPrice": 19600,
     "unit": "m"
   },
   "Co xuống máng cáp W100 x H50 x t1.6 + Nắp Sơn tĩnh điện (AsiaE)": {
     "name": "Co xuống máng cáp W100 x H50 x t1.6 + Nắp",
     "spec": "Sơn tĩnh điện",
     "brand": "AsiaE",
-    "materialPrice": 135,
-    "laborPrice": 19,
+    "materialPrice": 135000,
+    "laborPrice": 19600,
     "unit": "m"
   },
-  "Cáp điện Cu/PVC 1Cx1.5 mm2 Xanh, đỏ, đen,": {
+  "Cáp điện Cu/PVC 1Cx1.5 mm2 Xanh, đỏ, đen, Vàng TE (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx1.5 mm2",
-    "spec": "Xanh, đỏ, đen,",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "brand": "Cadivi",
+    "materialPrice": 5281,
+    "laborPrice": 2777,
+    "unit": "m"
   },
-  "281 , 2 777": {
-    "name": "281 , 2",
-    "spec": "777",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+  "Cáp điện Cu/PVC 1Cx1.5 mm2 Xanh, đỏ, đen, Vàng TE (Việt Thái)": {
+    "name": "Cáp điện Cu/PVC 1Cx1.5 mm2",
+    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "brand": "Việt Thái",
+    "materialPrice": 4560,
+    "laborPrice": 2777,
+    "unit": "m"
   },
-  "560 , 2 777": {
-    "name": "560 , 2",
-    "spec": "777",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Cáp điện Cu/PVC 1Cx2.5 mm2 Xanh, đỏ, đen,": {
+  "Cáp điện Cu/PVC 1Cx2.5 mm2 Xanh, đỏ, đen, Vàng TE (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx2.5 mm2",
-    "spec": "Xanh, đỏ, đen,",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "brand": "Cadivi",
+    "materialPrice": 8610,
+    "laborPrice": 3087,
+    "unit": "m"
   },
-  "610 , 3 087": {
-    "name": "610 , 3",
-    "spec": "087",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+  "Cáp điện Cu/PVC 1Cx2.5 mm2 Xanh, đỏ, đen, Vàng TE (Việt Thái)": {
+    "name": "Cáp điện Cu/PVC 1Cx2.5 mm2",
+    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "brand": "Việt Thái",
+    "materialPrice": 7440,
+    "laborPrice": 3087,
+    "unit": "m"
   },
-  "440 , 3 087": {
-    "name": "440 , 3",
-    "spec": "087",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Cáp điện Cu/PVC 1Cx4 mm2 Xanh, đỏ, đen,": {
+  "Cáp điện Cu/PVC 1Cx4 mm2 Xanh, đỏ, đen, Vàng TE (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx4 mm2",
-    "spec": "Xanh, đỏ, đen,",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "brand": "Việt Thái",
+    "materialPrice": 11250,
+    "laborPrice": 3593,
+    "unit": "m"
   },
-  "250 , 3 593": {
-    "name": "250 , 3",
-    "spec": "593",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Cáp điện Cu/PVC 1Cx6 mm2 Xanh, đỏ, đen,": {
+  "Cáp điện Cu/PVC 1Cx6 mm2 Xanh, đỏ, đen, Vàng TE (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx6 mm2",
-    "spec": "Xanh, đỏ, đen,",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "889 , 4 145": {
-    "name": "889 , 4",
-    "spec": "145",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "Xanh, đỏ, đen, \nVàng TE",
+    "brand": "Cadivi",
+    "materialPrice": 18889,
+    "laborPrice": 4145,
+    "unit": "m"
   },
   "Cáp điện Cu/PVC 1Cx10 mm2 CV (Cadivi)": {
     "name": "Cáp điện Cu/PVC 1Cx10 mm2",
     "spec": "CV",
     "brand": "Cadivi",
-    "materialPrice": 31,
-    "laborPrice": 4,
+    "materialPrice": 31874,
+    "laborPrice": 4851,
     "unit": "m"
   },
   "Cáp điện Cu/PVC 1Cx10 mm2 CV (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx10 mm2",
     "spec": "CV",
     "brand": "Việt Thái",
-    "materialPrice": 27,
-    "laborPrice": 4,
+    "materialPrice": 27370,
+    "laborPrice": 4851,
     "unit": "m"
   },
   "Cáp điện Cu/PVC 1Cx16 mm2 CV (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx16 mm2",
     "spec": "CV",
     "brand": "Việt Thái",
-    "materialPrice": 41,
-    "laborPrice": 6,
+    "materialPrice": 41660,
+    "laborPrice": 6174,
     "unit": "m"
   },
   "Cáp điện Cu/PVC 1Cx35 mm2 CV (Việt Thái)": {
     "name": "Cáp điện Cu/PVC 1Cx35 mm2",
     "spec": "CV",
     "brand": "Việt Thái",
-    "materialPrice": 81,
-    "laborPrice": 13,
+    "materialPrice": 81130,
+    "laborPrice": 13197,
     "unit": "m"
   },
   "Cáp điện Cu/XLPE/PVC 1Cx25 mm2 CXV (Việt Thái)": {
     "name": "Cáp điện Cu/XLPE/PVC 1Cx25 mm2",
     "spec": "CXV",
     "brand": "Việt Thái",
-    "materialPrice": 62,
-    "laborPrice": 8,
+    "materialPrice": 62350,
+    "laborPrice": 8804,
     "unit": "m"
   },
   "Cáp điện Cu/XLPE/PVC 1Cx70 mm2 CXV (Việt Thái)": {
     "name": "Cáp điện Cu/XLPE/PVC 1Cx70 mm2",
     "spec": "CXV",
     "brand": "Việt Thái",
-    "materialPrice": 165,
-    "laborPrice": 19,
+    "materialPrice": 165510,
+    "laborPrice": 19600,
     "unit": "m"
   },
   "Bộ đèn Tuýp LED T8 1x9W, L=600mm DTF109 (Duhal)": {
     "name": "Bộ đèn Tuýp LED T8 1x9W, L=600mm",
     "spec": "DTF109",
     "brand": "Duhal",
-    "materialPrice": 104,
-    "laborPrice": 45,
+    "materialPrice": 104738,
+    "laborPrice": 45733,
     "unit": "Cái"
   },
   "Bộ đèn Tuýp LED T8 1x18W, L=1200mm DTF118 (Duhal)": {
     "name": "Bộ đèn Tuýp LED T8 1x18W, L=1200mm",
     "spec": "DTF118",
     "brand": "Duhal",
-    "materialPrice": 122,
-    "laborPrice": 45,
+    "materialPrice": 122892,
+    "laborPrice": 45733,
     "unit": "Cái"
   },
   "Đèn Led trang trí gắn vách 10W ABY018 (Duhal)": {
     "name": "Đèn Led trang trí gắn vách 10W",
     "spec": "ABY018",
     "brand": "Duhal",
-    "materialPrice": 317,
-    "laborPrice": 40,
+    "materialPrice": 317455,
+    "laborPrice": 40000,
     "unit": "Cái"
   },
   "Đèn Led trang trí trụ cổng W220mm x H270mm DT01T200 (Nhập)": {
     "name": "Đèn Led trang trí trụ cổng W220mm x H270mm",
     "spec": "DT01T200",
     "brand": "Nhập",
-    "materialPrice": 967,
-    "laborPrice": 70,
+    "materialPrice": 967273,
+    "laborPrice": 70000,
     "unit": "Cái"
   },
   "Đèn LED downlight âm trần 9W SDPT209 (Duhal)": {
     "name": "Đèn LED downlight âm trần 9W",
     "spec": "SDPT209",
     "brand": "Duhal",
-    "materialPrice": 53,
-    "laborPrice": 45,
+    "materialPrice": 53967,
+    "laborPrice": 45733,
     "unit": "Cái"
   },
   "Đèn LED panel tròn âm trần 9W SDPT209 (Duhal)": {
     "name": "Đèn LED panel tròn âm trần 9W",
     "spec": "SDPT209",
     "brand": "Duhal",
-    "materialPrice": 53,
-    "laborPrice": 45,
+    "materialPrice": 53967,
+    "laborPrice": 45733,
     "unit": "Cái"
   },
   "Công tắc đơn, 1 chiều, mặt vuông WMT501MYH‑VN (Panasonic)": {
     "name": "Công tắc đơn, 1 chiều, mặt vuông",
     "spec": "WMT501MYH‑VN",
     "brand": "Panasonic",
-    "materialPrice": 68,
-    "laborPrice": 20,
+    "materialPrice": 68750,
+    "laborPrice": 20000,
     "unit": "Cái"
   },
   "Công tắc đôi, 1 chiều, mặt vuông WMT503MYH‑VN (Panasonic)": {
     "name": "Công tắc đôi, 1 chiều, mặt vuông",
     "spec": "WMT503MYH‑VN",
     "brand": "Panasonic",
-    "materialPrice": 104,
-    "laborPrice": 35,
+    "materialPrice": 104546,
+    "laborPrice": 35280,
     "unit": "Cái"
   },
   "Công tắcđơn, 2 chiều, mặt vuông WMT502MYH‑VN (Panasonic)": {
     "name": "Công tắcđơn, 2 chiều, mặt vuông",
     "spec": "WMT502MYH‑VN",
     "brand": "Panasonic",
-    "materialPrice": 88,
-    "laborPrice": 31,
+    "materialPrice": 88436,
+    "laborPrice": 31360,
     "unit": "Cái"
   },
   "Công tắc đôi, 2 chiều, mặt vuông WMT504MYH‑VN (Panasonic)": {
     "name": "Công tắc đôi, 2 chiều, mặt vuông",
     "spec": "WMT504MYH‑VN",
     "brand": "Panasonic",
-    "materialPrice": 124,
-    "laborPrice": 35,
+    "materialPrice": 124432,
+    "laborPrice": 35280,
     "unit": "Cái"
   },
   "Công tắc ba, 1 chiều, mặt vuông WMT505MYH‑VN (Panasonic)": {
     "name": "Công tắc ba, 1 chiều, mặt vuông",
     "spec": "WMT505MYH‑VN",
     "brand": "Panasonic",
-    "materialPrice": 160,
-    "laborPrice": 39,
+    "materialPrice": 160200,
+    "laborPrice": 39200,
     "unit": "Cái"
   },
   "Công tắc dùng thẻ WEC5781MYH‑VN (Panasonic)": {
     "name": "Công tắc dùng thẻ",
     "spec": "WEC5781MYH‑VN",
     "brand": "Panasonic",
-    "materialPrice": 1,
-    "laborPrice": 43,
+    "materialPrice": 1090909,
+    "laborPrice": 43120,
     "unit": "Cái"
   },
   "Đế âm vuông S3157 (Sino)": {
     "name": "Đế âm vuông",
     "spec": "S3157",
     "brand": "Sino",
-    "materialPrice": 4,
-    "laborPrice": 9,
+    "materialPrice": 4256,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Đế âm đơn vuông NA105 (Nanoco)": {
     "name": "Đế âm đơn vuông",
     "spec": "NA105",
     "brand": "Nanoco",
-    "materialPrice": 4,
-    "laborPrice": 9,
+    "materialPrice": 4650,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Đế âm đơn chữ nhật S2157 (Sino)": {
     "name": "Đế âm đơn chữ nhật",
     "spec": "S2157",
     "brand": "Sino",
-    "materialPrice": 3,
-    "laborPrice": 9,
+    "materialPrice": 3345,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Đế âm đơn chữ nhật FMD (HDV)": {
     "name": "Đế âm đơn chữ nhật",
     "spec": "FMD",
     "brand": "HDV",
-    "materialPrice": 3,
-    "laborPrice": 9,
+    "materialPrice": 3004,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Đế âm đôi S2157/D (Sino)": {
     "name": "Đế âm đôi",
     "spec": "S2157/D",
     "brand": "Sino",
-    "materialPrice": 8,
-    "laborPrice": 9,
+    "materialPrice": 8264,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Ống nhựa cứng luồng dây điện D20 VL9020 (Sino)": {
     "name": "Ống nhựa cứng luồng dây điện D20",
     "spec": "VL9020",
     "brand": "Sino",
-    "materialPrice": 6,
-    "laborPrice": 7,
+    "materialPrice": 6873,
+    "laborPrice": 7840,
     "unit": "m"
   },
-  "Ống nhựa cứng luồng dây điện D20 CO20": {
+  "Ống nhựa cứng luồng dây điện D20 CO20 750N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D20",
-    "spec": "CO20",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "CO20\n750N",
+    "brand": "HDV",
+    "materialPrice": 5240,
+    "laborPrice": 7840,
+    "unit": "m"
   },
-  "240 , 7 840": {
-    "name": "240 , 7",
-    "spec": "840",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa cứng luồng dây điện D20 CL20": {
+  "Ống nhựa cứng luồng dây điện D20 CL20 320N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D20",
-    "spec": "CL20",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "870 , 7 840": {
-    "name": "870 , 7",
-    "spec": "840",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "CL20\n320N",
+    "brand": "HDV",
+    "materialPrice": 4870,
+    "laborPrice": 7840,
+    "unit": "m"
   },
   "Ống nhựa cứng luồng dây điện D25 VL9025 (Sino)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
     "spec": "VL9025",
     "brand": "Sino",
-    "materialPrice": 9,
-    "laborPrice": 9,
+    "materialPrice": 9699,
+    "laborPrice": 9800,
     "unit": "m"
   },
-  "Ống nhựa cứng luồng dây điện D25 CL25": {
+  "Ống nhựa cứng luồng dây điện D25 CL25 320N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
-    "spec": "CL25",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "CL25\n320N",
+    "brand": "HDV",
+    "materialPrice": 7089,
+    "laborPrice": 9800,
+    "unit": "m"
   },
-  "089 , 9 800": {
-    "name": "089 , 9",
-    "spec": "800",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa cứng luồng dây điện D25 CO25": {
+  "Ống nhựa cứng luồng dây điện D25 CO25 750N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
-    "spec": "CO25",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "CO25\n750N",
+    "brand": "HDV",
+    "materialPrice": 7551,
+    "laborPrice": 9800,
+    "unit": "m"
   },
-  "551 , 9 800": {
-    "name": "551 , 9",
-    "spec": "800",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa cứng luồng dây điện D25 MD25": {
+  "Ống nhựa cứng luồng dây điện D25 MD25 750N (Sam Phú)": {
     "name": "Ống nhựa cứng luồng dây điện D25",
-    "spec": "MD25",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "MD25\n750N",
+    "brand": "Sam Phú",
+    "materialPrice": 7675,
+    "laborPrice": 9800,
+    "unit": "m"
   },
-  "675 , 9 800": {
-    "name": "675 , 9",
-    "spec": "800",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa cứng luồng dây điện D32 MD32": {
+  "Ống nhựa cứng luồng dây điện D32 MD32 750N (Sam Phú)": {
     "name": "Ống nhựa cứng luồng dây điện D32",
-    "spec": "MD32",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "MD32\n750N",
+    "brand": "Sam Phú",
+    "materialPrice": 15368,
+    "laborPrice": 11760,
+    "unit": "m"
   },
-  "368 , 11 760": {
-    "name": "368 , 11",
-    "spec": "760",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa cứng luồng dây điện D32 CL32": {
+  "Ống nhựa cứng luồng dây điện D32 CL32 320N (HDV)": {
     "name": "Ống nhựa cứng luồng dây điện D32",
-    "spec": "CL32",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "CL32\n320N",
+    "brand": "HDV",
+    "materialPrice": 12021,
+    "laborPrice": 11760,
+    "unit": "m"
   },
-  "021 , 11 760": {
-    "name": "021 , 11",
-    "spec": "760",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa ruột gà luồng dây điện D20 SP9020CM": {
+  "Ống nhựa ruột gà luồng dây điện D20 SP9020CM 50m/cuộn (Sino)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "SP9020CM",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "SP9020CM\n50m/cuộn",
+    "brand": "Sino",
+    "materialPrice": 2320,
+    "laborPrice": 2613,
+    "unit": "m"
   },
-  "320 , 2 613": {
-    "name": "320 , 2",
-    "spec": "613",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa ruột gà luồng dây điện D20 FRG20W": {
+  "Ống nhựa ruột gà luồng dây điện D20 FRG20W 50m/cuộn (Nanoco)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "FRG20W",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "FRG20W\n50m/cuộn",
+    "brand": "Nanoco",
+    "materialPrice": 2352,
+    "laborPrice": 2613,
+    "unit": "m"
   },
-  "352 , 2 613": {
-    "name": "352 , 2",
-    "spec": "613",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa ruột gà luồng dây điện D20 TPE": {
+  "Ống nhựa ruột gà luồng dây điện D20 TPE 40m/cuộn (Tiến Phát I)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "TPE",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "TPE\n40m/cuộn",
+    "brand": "Tiến Phát I",
+    "materialPrice": 3275,
+    "laborPrice": 2613,
+    "unit": "m"
   },
-  "275 , 2 613": {
-    "name": "275 , 2",
-    "spec": "613",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "Ống nhựa ruột gà luồng dây điện D20 HDPE": {
+  "Ống nhựa ruột gà luồng dây điện D20 HDPE 50m/cuộn (Tiến Phát)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
-    "spec": "HDPE",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "620 , 2 613": {
-    "name": "620 , 2",
-    "spec": "613",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "spec": "HDPE\n50m/cuộn",
+    "brand": "Tiến Phát",
+    "materialPrice": 2620,
+    "laborPrice": 2613,
+    "unit": "m"
   },
   "Ống nhựa ruột gà luồng dây điện D20 COR20CC (HDV)": {
     "name": "Ống nhựa ruột gà luồng dây điện D20",
     "spec": "COR20CC",
     "brand": "HDV",
-    "materialPrice": 2,
-    "laborPrice": 2,
+    "materialPrice": 2340,
+    "laborPrice": 2613,
     "unit": "m"
   },
   "Hộp nối 1 đường D25 JBO25/1 (HDV)": {
     "name": "Hộp nối 1 đường D25",
     "spec": "JBO25/1",
     "brand": "HDV",
-    "materialPrice": 4,
-    "laborPrice": 3,
+    "materialPrice": 4320,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 1 đường D20 JBO20/1 (HDV)": {
     "name": "Hộp nối 1 đường D20",
     "spec": "JBO20/1",
     "brand": "HDV",
-    "materialPrice": 3,
-    "laborPrice": 3,
+    "materialPrice": 3960,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 2 đường D20 JBO20/S2 (HDV)": {
     "name": "Hộp nối 2 đường D20",
     "spec": "JBO20/S2",
     "brand": "HDV",
-    "materialPrice": 3,
-    "laborPrice": 3,
+    "materialPrice": 3960,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 2 đường vuông góc D20 JBO20/A2 (HDV)": {
     "name": "Hộp nối 2 đường vuông góc D20",
     "spec": "JBO20/A2",
     "brand": "HDV",
-    "materialPrice": 3,
-    "laborPrice": 3,
+    "materialPrice": 3960,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 3 đường D20 JBO20/3 (HDV)": {
     "name": "Hộp nối 3 đường D20",
     "spec": "JBO20/3",
     "brand": "HDV",
-    "materialPrice": 3,
-    "laborPrice": 3,
+    "materialPrice": 3960,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 4 đường D20 JBO20/4 (HDV)": {
     "name": "Hộp nối 4 đường D20",
     "spec": "JBO20/4",
     "brand": "HDV",
-    "materialPrice": 3,
-    "laborPrice": 3,
+    "materialPrice": 3960,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 3 đường D20 E240/20/3 (Sino)": {
     "name": "Hộp nối 3 đường D20",
     "spec": "E240/20/3",
     "brand": "Sino",
-    "materialPrice": 3,
-    "laborPrice": 3,
+    "materialPrice": 3782,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 4 đường D20 E240/20/4 (Sino)": {
     "name": "Hộp nối 4 đường D20",
     "spec": "E240/20/4",
     "brand": "Sino",
-    "materialPrice": 4,
-    "laborPrice": 3,
+    "materialPrice": 4801,
+    "laborPrice": 3267,
     "unit": "Cái"
   },
   "Hộp nối 15x15 (Lihan)": {
     "name": "Hộp nối  15x15",
     "spec": "",
     "brand": "Lihan",
-    "materialPrice": 18,
-    "laborPrice": 9,
+    "materialPrice": 18000,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Hộp nối 15x15x55 ABO150 (HDV)": {
     "name": "Hộp nối  15x15x55",
     "spec": "ABO150",
     "brand": "HDV",
-    "materialPrice": 20,
-    "laborPrice": 9,
+    "materialPrice": 20250,
+    "laborPrice": 9800,
     "unit": "Cái"
   },
   "Ổ cắm đơn, 3 cực, 16A WEV1181MYH (Panasonic)": {
     "name": "Ổ cắm đơn, 3 cực, 16A",
     "spec": "WEV1181MYH",
     "brand": "Panasonic",
-    "materialPrice": 71,
-    "laborPrice": 20,
+    "materialPrice": 71023,
+    "laborPrice": 20000,
     "unit": "Cái"
   },
   "Ổ cắm đôi, 3 cực, 16A WEV1582MYH (Panasonic)": {
     "name": "Ổ cắm đôi, 3 cực, 16A",
     "spec": "WEV1582MYH",
     "brand": "Panasonic",
-    "materialPrice": 99,
-    "laborPrice": 20,
+    "materialPrice": 99432,
+    "laborPrice": 20000,
     "unit": "Cái"
   },
   "Ổ cắm đôi, 3 cực, 16A WEV1582SW (Panasonic)": {
     "name": "Ổ cắm đôi, 3 cực, 16A",
     "spec": "WEV1582SW",
     "brand": "Panasonic",
-    "materialPrice": 63,
-    "laborPrice": 20,
+    "materialPrice": 63672,
+    "laborPrice": 20000,
     "unit": "Cái"
   },
   "Ổ cắm data RJ45 WEV2488MYH-CAT5E (Panasonic)": {
     "name": "Ổ cắm data RJ45",
     "spec": "WEV2488MYH-CAT5E",
     "brand": "Panasonic",
-    "materialPrice": 159,
-    "laborPrice": 43,
+    "materialPrice": 159091,
+    "laborPrice": 43120,
     "unit": "Cái"
   },
   "Ổ cắm data RJ45 WEV24886H-CAT6 (Panasonic)": {
     "name": "Ổ cắm data RJ45",
     "spec": "WEV24886H-CAT6",
     "brand": "Panasonic",
-    "materialPrice": 162,
-    "laborPrice": 43,
+    "materialPrice": 162909,
+    "laborPrice": 43120,
     "unit": "Cái"
   },
   "Ổ cắm điện thoại RJ11 WEV2364MYH (Panasonic)": {
     "name": "Ổ cắm điện thoại RJ11",
     "spec": "WEV2364MYH",
     "brand": "Panasonic",
-    "materialPrice": 76,
-    "laborPrice": 43,
+    "materialPrice": 76704,
+    "laborPrice": 43120,
     "unit": "Cái"
   },
   "Cáp mạng LAN CAT6 313 4224C6 (Benka)": {
     "name": "Cáp mạng LAN CAT6",
     "spec": "313 4224C6",
     "brand": "Benka",
-    "materialPrice": 7,
-    "laborPrice": 5,
+    "materialPrice": 7377,
+    "laborPrice": 5227,
     "unit": "m"
   },
-  "Cáp mạng LAN CAT6 301-600851-03BU (Alantek)": {
+  "Cáp mạng LAN CAT6 301-600851-03BU (Alantek China)": {
     "name": "Cáp mạng LAN CAT6",
     "spec": "301-600851-03BU",
-    "brand": "Alantek",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
-  },
-  "738 , 5 227": {
-    "name": "738 , 5",
-    "spec": "227",
-    "brand": "",
-    "materialPrice": 0,
-    "laborPrice": 0,
-    "unit": ""
+    "brand": "Alantek\nChina",
+    "materialPrice": 7738,
+    "laborPrice": 5227,
+    "unit": "m"
   }
 }
